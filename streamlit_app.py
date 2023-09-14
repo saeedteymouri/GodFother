@@ -1,49 +1,34 @@
 import streamlit as st
+import pandas as pd
 
-# Create a dictionary with default roles and names
-default_data = {
-    "The Godfather": "",
-    "Matador": "",
-    "Saul Goodman": "",
-    "Dr. Watson": "",
-    "Leon": "",
-    "Constantine": "",
-    "Nostradamus": "",
-    "Citizen Kane": "",
-    "Simple Citizen 1": "",
-    "Simple Citizen 2": "",
-    "Simple Citizen 3": ""
-}
+# Create a list of characters
+characters = [
+    "Godfather", "Matador", "Saul Goodman", "Dr. Watson", "Leon",
+    "Constantine", "Nostradamus", "Citizen Kane", "Simple Citizen 1",
+    "Simple Citizen 2", "Simple Citizen 3"
+]
+
+# Initialize a dictionary to store names for each character
+character_names = {char: "" for char in characters}
 
 # Create a Streamlit app
 def main():
-    st.title("Name List App")
+    st.title("Character Name List App")
 
-    # Create a button to clear the table data and rearrange roles
-    if st.button("Clear Table Data"):
-        clear_data()
-
-    # Create a sidebar with the default roles
-    st.sidebar.header("Roles")
-    selected_role = st.sidebar.selectbox("Select a Role", list(default_data.keys()))
-
-    # Create an edit box for entering names
+    # Create input box for entering names
     new_name = st.text_input("Enter a Name")
 
-    # Create a confirmation button
-    if st.button("Add Name"):
+    # Create a dropdown menu to select a character
+    selected_character = st.selectbox("Select a Character", characters)
+
+    # Create an "Add" button
+    if st.button("Add"):
         if new_name:
-            default_data[selected_role] = new_name
+            character_names[selected_character] = new_name
 
-    # Display the table with roles and names
-    st.header("Roles and Names")
-    data = {"Role": list(default_data.keys()), "Name": list(default_data.values())}
-    st.table(data)
-
-def clear_data():
-    # Clear the table data by resetting the default_data dictionary
-    for key in default_data:
-        default_data[key] = ""
+    # Create a table to display character names
+    df = pd.DataFrame({"Character": characters, "Name": [character_names[char] for char in characters]})
+    st.table(df)
 
 if __name__ == "__main__":
     main()
