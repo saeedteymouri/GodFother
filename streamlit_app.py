@@ -36,9 +36,9 @@ def assign_roles():
     # Shuffle the characters list to assign roles randomly
     random.shuffle(characters)
     
-    # Assign roles to names
-    for i, char in enumerate(characters):
-        st.session_state.character_names[char] = char
+    # Assign roles to the first column of the table
+    df = pd.DataFrame({"Character": characters})
+    st.table(df.set_index("Character"))
 
 if __name__ == "__main__":
     main()
