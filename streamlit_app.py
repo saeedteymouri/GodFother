@@ -33,11 +33,12 @@ def main():
     st.table(df.set_index("Character"))
 
 def assign_roles():
-    # Shuffle the characters list to assign roles randomly
-    random.shuffle(characters)
-    
-    # Assign roles to the first column of the table
-    df = pd.DataFrame({"Character": characters})
+    # Shuffle the names list to randomize the names
+    names = list(st.session_state.character_names.values())
+    random.shuffle(names)
+
+    # Assign randomized names to the table
+    df = pd.DataFrame({"Character": characters, "Name": names})
     st.table(df.set_index("Character"))
 
 if __name__ == "__main__":
