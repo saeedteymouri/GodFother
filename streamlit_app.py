@@ -1,3 +1,4 @@
+import streamlit as st
 # Create a list to store the names
 names = []
 
@@ -10,3 +11,4 @@ for i in range(1, 12):
 print("You entered the following names:")
 for name in names:
     print(name)
+st.title("Godfother Moderator")
