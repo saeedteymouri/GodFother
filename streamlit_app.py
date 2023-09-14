@@ -36,9 +36,8 @@ def main():
     data = {"Role": [], "Name": []}
 
     for role, names in default_data.items():
-        for name in names:
-            data["Role"].append(role)
-            data["Name"].append(name)
+        data["Role"].extend([role] * len(names))
+        data["Name"].extend(names)
 
     st.table(data)
 
