@@ -2,24 +2,24 @@ import streamlit as st
 
 # Create a dictionary with default roles and names
 default_data = {
-    "The Godfather": [],
-    "Matador": [],
-    "Saul Goodman": [],
-    "Dr. Watson": [],
-    "Leon": [],
-    "Constantine": [],
-    "Nostradamus": [],
-    "Citizen Kane": [],
-    "Simple Citizen 1": [],
-    "Simple Citizen 2": [],
-    "Simple Citizen 3": []
+    "The Godfather": "",
+    "Matador": "",
+    "Saul Goodman": "",
+    "Dr. Watson": "",
+    "Leon": "",
+    "Constantine": "",
+    "Nostradamus": "",
+    "Citizen Kane": "",
+    "Simple Citizen 1": "",
+    "Simple Citizen 2": "",
+    "Simple Citizen 3": ""
 }
 
 # Create a Streamlit app
 def main():
     st.title("Name List App")
 
-    # Create a button to clear the table data
+    # Create a button to clear the table data and rearrange roles
     if st.button("Clear Table Data"):
         clear_data()
 
@@ -33,22 +33,17 @@ def main():
     # Create a confirmation button
     if st.button("Add Name"):
         if new_name:
-            default_data[selected_role].append(new_name)
+            default_data[selected_role] = new_name
 
     # Display the table with roles and names
     st.header("Roles and Names")
-    data = {"Role": [], "Name": []}
-
-    for role, names in default_data.items():
-        data["Role"].extend([role] * len(names))
-        data["Name"].extend(names)
-
+    data = {"Role": list(default_data.keys()), "Name": list(default_data.values())}
     st.table(data)
 
 def clear_data():
     # Clear the table data by resetting the default_data dictionary
     for key in default_data:
-        default_data[key] = []
+        default_data[key] = ""
 
 if __name__ == "__main__":
     main()
