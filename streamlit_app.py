@@ -27,9 +27,9 @@ def main():
         if new_name:
             st.session_state.character_names[selected_character] = new_name
 
-    # Create a table to display character names
+    # Create a table to display character names without row numbers
     df = pd.DataFrame({"Character": characters, "Name": [st.session_state.character_names[char] for char in characters]})
-    st.table(df)
+    st.table(df.set_index("Character"))
 
 if __name__ == "__main__":
     main()
