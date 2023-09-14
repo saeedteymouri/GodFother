@@ -2,30 +2,33 @@ import streamlit as st
 import pandas as pd
 import random
 
+# Create a list of default characters
+default_characters = [
+    "Godfather", "Matador", "Saul Goodman", "Dr. Watson", "Leon",
+    "Constantine", "Nostradamus", "Citizen Kane", "Simple Citizen 1",
+    "Simple Citizen 2", "Simple Citizen 3"
+]
+
+# Initialize a dictionary to store names for each character
+if 'character_names' not in st.session_state:
+    st.session_state.character_names = {char: "" for char in default_characters}
+
 # Create a Streamlit app
 def main():
     st.title("Character Name List App")
 
-    # Ask the user for the number of players
-    num_players = st.selectbox("Select the Number of Players", list(range(11, 14)))
+    # Get the number of players from the user
+    num_players = st.selectbox("Select the Number of Players", [11, 12, 13])
 
-    # Create a list of characters based on the selected number of players
-    characters = [
-        "Godfather", "Matador", "Saul Goodman", "Dr. Watson", "Leon",
-        "Constantine", "Nostradamus", "Citizen Kane", "Simple Citizen 1",
-        "Simple Citizen 2", "Simple Citizen 3"
-    ]
+    # Update characters and roles based on the number of players
+    if num_players == 12:
+        characters = default_characters + ["Simple Citizen 4"]
+    elif num_players == 13:
+        characters = default_characters + ["Simple Citizen 4", "Simple Mafia"]
+    else:
+        characters = default_characters
 
-    if num_players >= 12:
-        characters.append("Simple Citizen 4")
-    if num_players == 13:
-        characters.append("Simple Mafia")
-
-    # Initialize a dictionary to store names for each character
-    if 'character_names' not in st.session_state:
-        st.session_state.character_names = {char: "" for char in characters}
-
-    # Create input boxes for entering names with labels "Person 1" to "Person n"
+    # Create input boxes for entering names based on the number of players
     st.header("Enter Names:")
     for i, char in enumerate(characters):
         st.session_state.character_names[char] = st.text_input(f"Person {i+1}:", st.session_state.character_names[char])
