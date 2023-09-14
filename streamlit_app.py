@@ -27,10 +27,10 @@ def main():
     # Display the table
     st.table(df.set_index("Character"))
 
-    # Create input boxes for entering names
+    # Create input boxes for entering names with labels "Person 1" to "Person 11"
     st.header("Enter Names:")
-    for char in characters:
-        st.session_state.character_names[char] = st.text_input(f"{char}:", st.session_state.character_names[char])
+    for i, char in enumerate(characters):
+        st.session_state.character_names[char] = st.text_input(f"Person {i+1}:", st.session_state.character_names[char])
 
 def assign_roles(df):
     # Shuffle the characters list to assign roles randomly
