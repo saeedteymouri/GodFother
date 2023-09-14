@@ -19,6 +19,10 @@ default_data = {
 def main():
     st.title("Name List App")
 
+    # Create a button to clear the table data
+    if st.button("Clear Table Data"):
+        clear_data()
+
     # Create a sidebar with the default roles
     st.sidebar.header("Roles")
     selected_role = st.sidebar.selectbox("Select a Role", list(default_data.keys()))
@@ -40,6 +44,11 @@ def main():
         data["Name"].extend(names)
 
     st.table(data)
+
+def clear_data():
+    # Clear the table data by resetting the default_data dictionary
+    for key in default_data:
+        default_data[key] = []
 
 if __name__ == "__main__":
     main()
