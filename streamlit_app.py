@@ -26,11 +26,10 @@ def main():
     if st.button("Assign Role"):
         assign_roles()
 
-    # Create a table to display character names without row numbers
-    df = pd.DataFrame({"Character": characters, "Name": [st.session_state.character_names[char] for char in characters]})
-    
-    # Display the table at the bottom
-    st.table(df.set_index("Character"))
+    # Display the table only after assigning roles
+    if any(st.session_state.character_names.values()):
+        df = pd.DataFrame({"Character": characters, "Name": [st.session_state.character_names[char] for char in characters]})
+        st.table(df.set_index("Character"))
 
 def assign_roles():
     # Shuffle the names list to randomize the names
@@ -39,7 +38,7 @@ def assign_roles():
 
     # Assign randomized names to the table
     df = pd.DataFrame({"Character": characters, "Name": names})
-    st.table(df.set_index("Character"))
+    st.session_state.character_names = {char: name for char, name in zip(characters, names)}
 
 if __name__ == "__main__":
     main()
