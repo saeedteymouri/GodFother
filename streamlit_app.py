@@ -21,7 +21,7 @@ def main():
 
     # Create a sidebar with the default names
     st.sidebar.header("Names")
-    selected_names = st.sidebar.multiselect("Select Names", default_names)
+    selected_name = st.sidebar.selectbox("Select a Name", default_names)
 
     # Create an edit box for entering names
     new_name = st.text_input("Enter a Name")
@@ -29,12 +29,10 @@ def main():
     # Create a confirmation button
     if st.button("Add Name"):
         if new_name:
-            selected_names.append(new_name)
+            st.write(f"{new_name} -------------------- {selected_name}")
 
     # Display the table with selected names
     st.header("Selected Names")
-    data = {"Names": selected_names}
-    st.table(data)
 
 if __name__ == "__main__":
     main()
