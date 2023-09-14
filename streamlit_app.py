@@ -9,7 +9,8 @@ characters = [
 ]
 
 # Initialize a dictionary to store names for each character
-character_names = {char: "" for char in characters}
+if 'character_names' not in st.session_state:
+    st.session_state.character_names = {char: "" for char in characters}
 
 # Create a Streamlit app
 def main():
@@ -24,10 +25,10 @@ def main():
     # Create an "Add" button
     if st.button("Add"):
         if new_name:
-            character_names[selected_character] = new_name
+            st.session_state.character_names[selected_character] = new_name
 
     # Create a table to display character names
-    df = pd.DataFrame({"Character": characters, "Name": [character_names[char] for char in characters]})
+    df = pd.DataFrame({"Character": characters, "Name": [st.session_state.character_names[char] for char in characters]})
     st.table(df)
 
 if __name__ == "__main__":
