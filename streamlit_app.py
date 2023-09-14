@@ -2,17 +2,17 @@ import streamlit as st
 
 # Create a dictionary with default roles and names
 default_data = {
-    "The Godfather": "",
-    "Matador": "",
-    "Saul Goodman": "",
-    "Dr. Watson": "",
-    "Leon": "",
-    "Constantine": "",
-    "Nostradamus": "",
-    "Citizen Kane": "",
-    "Simple Citizen 1": "",
-    "Simple Citizen 2": "",
-    "Simple Citizen 3": ""
+    "The Godfather": [],
+    "Matador": [],
+    "Saul Goodman": [],
+    "Dr. Watson": [],
+    "Leon": [],
+    "Constantine": [],
+    "Nostradamus": [],
+    "Citizen Kane": [],
+    "Simple Citizen 1": [],
+    "Simple Citizen 2": [],
+    "Simple Citizen 3": []
 }
 
 # Create a Streamlit app
@@ -29,11 +29,17 @@ def main():
     # Create a confirmation button
     if st.button("Add Name"):
         if new_name:
-            default_data[selected_role] = new_name
+            default_data[selected_role].append(new_name)
 
     # Display the table with roles and names
     st.header("Roles and Names")
-    data = {"Role": list(default_data.keys()), "Name": list(default_data.values())}
+    data = {"Role": [], "Name": []}
+
+    for role, names in default_data.items():
+        for name in names:
+            data["Role"].append(role)
+            data["Name"].append(name)
+
     st.table(data)
 
 if __name__ == "__main__":
