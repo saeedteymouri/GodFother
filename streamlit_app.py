@@ -31,5 +31,9 @@ def main():
     df = pd.DataFrame({"Character": characters, "Name": [st.session_state.character_names[char] for char in characters]})
     st.table(df.set_index("Character"))
 
+    # Create a button to wake up roles
+    if st.button("Wake Up Roles"):
+        st.write("Mafia wake up")
+
 if __name__ == "__main__":
     main()
