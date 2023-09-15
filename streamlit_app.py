@@ -97,18 +97,20 @@ def display_ability_actions(night):
         night_actions += f"The Godfather {night} doesn't kill anyone during the night."
     elif godfather_ability == "kills":
         if godfather_victim:
+            character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
             if character_sides.get(godfather_victim) == "Armor" and godfather_victim == "Leon":
-                night_actions += f"The Godfather {night} shot {godfather_victim} with an arrow, but {godfather_victim}'s armor was destroyed, and he himself survived."
+                night_actions += f"The Godfather {night} shot {character_name} with an arrow, but {character_name}'s armor was destroyed, and he himself survived."
             else:
-                night_actions += f"The Godfather {night} kills {godfather_victim} ({character_sides.get(godfather_victim)}) during the night."
+                night_actions += f"The Godfather {night} kills {character_name} ({character_sides.get(godfather_victim)}) during the night."
         else:
             night_actions += f"The Godfather {night} kills someone during the night."
     elif godfather_ability == "slaughters":
         if godfather_victim:
+            character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
             if character_sides.get(godfather_victim) == "Armor" and godfather_victim == "Leon":
-                night_actions += f"The Godfather {night} shot {godfather_victim} with an arrow, but {godfather_victim}'s armor was destroyed, and he himself survived."
+                night_actions += f"The Godfather {night} shot {character_name} with an arrow, but {character_name}'s armor was destroyed, and he himself survived."
             else:
-                night_actions += f"The Godfather {night} slaughters {godfather_victim} ({character_sides.get(godfather_victim)}) during the night."
+                night_actions += f"The Godfather {night} slaughters {character_name} ({character_sides.get(godfather_victim)}) during the night."
         else:
             night_actions += f"The Godfather {night} slaughters someone during the night."
 
