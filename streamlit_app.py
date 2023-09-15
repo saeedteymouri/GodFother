@@ -13,12 +13,15 @@ characters = [
 if 'character_names' not in st.session_state:
     st.session_state.character_names = {char: "" for char in characters}
 
-# Initialize Godfather's ability and victim
+# Initialize Godfather's and Matador's abilities and victims
 if 'godfather_ability' not in st.session_state:
     st.session_state.godfather_ability = "doesn't kill anyone"
 
 if 'godfather_victim' not in st.session_state:
     st.session_state.godfather_victim = ""
+
+if 'matador_victim' not in st.session_state:
+    st.session_state.matador_victim = ""
 
 # Create a Streamlit app
 def main():
@@ -46,6 +49,11 @@ def main():
     godfather_victim = st.text_input("Enter Victim's Name (if applicable):")
     st.session_state.godfather_victim = godfather_victim
 
+    # Section for Matador's ability
+    st.subheader("The Role of the Matador")
+    matador_victim = st.text_input("Enter Matador's Target's Name (if applicable):")
+    st.session_state.matador_victim = matador_victim
+
     # Button to display ability actions
     if st.button("Ability Actions"):
         display_ability_actions()
@@ -62,6 +70,12 @@ def assign_roles():
 def display_ability_actions():
     godfather_ability = st.session_state.godfather_ability
     godfather_victim = st.session_state.godfather_victim
+    matador_victim = st.session_state.matador_victim
+
+    matador_ability_message = ""
+
+    if matador_victim:
+        matador_ability_message = f"The Matador took the ability of {matador_victim}, who cannot use their ability."
 
     if godfather_ability == "doesn't kill anyone":
         st.write("The Godfather doesn't kill anyone during the night.")
@@ -75,6 +89,8 @@ def display_ability_actions():
             st.write(f"The Godfather slaughters {godfather_victim} during the night.")
         else:
             st.write("The Godfather slaughters someone during the night.")
+    
+    st.write(matador_ability_message)
 
 if __name__ == "__main__":
     main()
