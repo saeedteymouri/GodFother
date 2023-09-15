@@ -9,15 +9,15 @@ characters = [
     "Simple Citizen 2", "Simple Citizen 3"
 ]
 
-# Define the roles associated with characters
-character_roles = {
+# Define the sides associated with characters
+character_sides = {
     "Godfather": "Mafia",
     "Matador": "Mafia",
     "Saul Goodman": "Mafia",
-    "Dr. Watson": "Detective",
-    "Leon": "Armor",
+    "Dr. Watson": "Citizen",
+    "Leon": "Citizen",
     "Constantine": "Citizen",
-    "Nostradamus": "Citizen",
+    "Nostradamus": "Independent",
     "Citizen Kane": "Citizen",
     "Simple Citizen 1": "Citizen",
     "Simple Citizen 2": "Citizen",
@@ -97,18 +97,18 @@ def display_ability_actions(night):
         night_actions += f"The Godfather {night} doesn't kill anyone during the night."
     elif godfather_ability == "kills":
         if godfather_victim:
-            if character_roles.get(godfather_victim) == "Armor" and godfather_victim == "Leon":
+            if character_sides.get(godfather_victim) == "Armor" and godfather_victim == "Leon":
                 night_actions += f"The Godfather {night} shot {godfather_victim} with an arrow, but {godfather_victim}'s armor was destroyed, and he himself survived."
             else:
-                night_actions += f"The Godfather {night} kills {godfather_victim} during the night."
+                night_actions += f"The Godfather {night} kills {godfather_victim} ({character_sides.get(godfather_victim)}) during the night."
         else:
             night_actions += f"The Godfather {night} kills someone during the night."
     elif godfather_ability == "slaughters":
         if godfather_victim:
-            if character_roles.get(godfather_victim) == "Armor" and godfather_victim == "Leon":
+            if character_sides.get(godfather_victim) == "Armor" and godfather_victim == "Leon":
                 night_actions += f"The Godfather {night} shot {godfather_victim} with an arrow, but {godfather_victim}'s armor was destroyed, and he himself survived."
             else:
-                night_actions += f"The Godfather {night} slaughters {godfather_victim} during the night."
+                night_actions += f"The Godfather {night} slaughters {godfather_victim} ({character_sides.get(godfather_victim)}) during the night."
         else:
             night_actions += f"The Godfather {night} slaughters someone during the night."
 
