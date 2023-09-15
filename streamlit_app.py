@@ -13,9 +13,12 @@ characters = [
 if 'character_names' not in st.session_state:
     st.session_state.character_names = {char: "" for char in characters}
 
-# Initialize the Godfather's action
-if 'godfather_action' not in st.session_state:
-    st.session_state.godfather_action = "Doesn't kill anyone"
+# Initialize Godfather's ability and victim
+if 'godfather_ability' not in st.session_state:
+    st.session_state.godfather_ability = "doesn't kill anyone"
+
+if 'godfather_victim' not in st.session_state:
+    st.session_state.godfather_victim = ""
 
 # Create a Streamlit app
 def main():
@@ -35,15 +38,17 @@ def main():
         df = pd.DataFrame({"Character": characters, "Name": [st.session_state.character_names[char] for char in characters]})
         st.table(df.set_index("Character"))
 
-    # During the Night section
-    st.header("During the Night")
-    godfather_action = st.selectbox("The role of the Godfather", ["Doesn't kill anyone", "Kills", "Slaughters"], index=0)
-    st.session_state.godfather_action = godfather_action
-    name_for_action = st.text_input("Name for the action")
+    # Section for Godfather's ability
+    st.header("During the Night 1")
+    st.subheader("The Role of the Godfather")
+    godfather_ability = st.selectbox("Choose Godfather's Ability:", ["doesn't kill anyone", "kills", "slaughters"])
+    st.session_state.godfather_ability = godfather_ability
+    godfather_victim = st.text_input("Enter Victim's Name (if applicable):")
+    st.session_state.godfather_victim = godfather_victim
 
-    # Button for Ability Actions
+    # Button to display ability actions
     if st.button("Ability Actions"):
-        perform_godfather_action(name_for_action)
+        display_ability_actions()
 
 def assign_roles():
     # Shuffle the names list to randomize the names
@@ -54,10 +59,22 @@ def assign_roles():
     df = pd.DataFrame({"Character": characters, "Name": names})
     st.session_state.character_names = {char: name for char, name in zip(characters, names)}
 
-def perform_godfather_action(name_for_action):
-    action = st.session_state.godfather_action
-    if action != "Doesn't kill anyone" and name_for_action:
-        st.write(f"The Godfather {action.lower()} {name_for_action}")
+def display_ability_actions():
+    godfather_ability = st.session_state.godfather_ability
+    godfather_victim = st.session_state.godfather_victim
+
+    if godfather_ability == "doesn't kill anyone":
+        st.write("The Godfather doesn't kill anyone during the night.")
+    elif godfather_ability == "kills":
+        if godfather_victim:
+            st.write(f"The Godfather kills {godfather_victim} during the night.")
+        else:
+            st.write("The Godfather kills someone during the night.")
+    elif godfather_ability == "slaughters":
+        if godfather_victim:
+            st.write(f"The Godfather slaughters {godfather_victim} during the night.")
+        else:
+            st.write("The Godfather slaughters someone during the night.")
 
 if __name__ == "__main__":
     main()
