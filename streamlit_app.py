@@ -84,8 +84,8 @@ def display_night_section(night):
     godfather_victim = st.text_input(f"Enter Victim's Name (if applicable) (Night {night}):")
     matador_victim = st.text_input(f"Enter Matador's Target's Name (if applicable) (Night {night}):")
 
-    # Button to display ability actions for the current night
-    if st.button(f"Apply Ability {night}"):
+    # Button to display night results for the current night
+    if st.button(f"Night Result {night}"):
         night_data = {
             "Godfather Ability": godfather_ability,
             "Godfather Victim": godfather_victim,
@@ -95,9 +95,9 @@ def display_night_section(night):
         # Store night-specific data
         st.session_state.night_data[night] = night_data
 
-        display_ability_actions(night)
+        display_night_results(night)
 
-def display_ability_actions(night):
+def display_night_results(night):
     night_data = st.session_state.night_data.get(night, {})
     godfather_ability = night_data.get("Godfather Ability", "doesn't kill anyone")
     godfather_victim = night_data.get("Godfather Victim", "")
@@ -111,7 +111,7 @@ def display_ability_actions(night):
     elif godfather_ability == "kills":
         if godfather_victim:
             character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
-            if character_sides.get(godfather_victim) == "Armor" and godfather_victim == "Leon":
+            if character_sides.get(godfather_victim) == "Citizen" and godfather_victim == "Leon":
                 night_actions += f"The Godfather {night} shot {character_name} with an arrow, but {character_name}'s armor was destroyed, and he himself survived."
             else:
                 night_actions += f"The Godfather {night} kills {character_name} ({character_sides.get(godfather_victim)}) during the night."
@@ -120,7 +120,7 @@ def display_ability_actions(night):
     elif godfather_ability == "slaughters":
         if godfather_victim:
             character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
-            if character_sides.get(godfather_victim) == "Armor" and godfather_victim == "Leon":
+            if character_sides.get(godfather_victim) == "Citizen" and godfather_victim == "Leon":
                 night_actions += f"The Godfather {night} shot {character_name} with an arrow, but {character_name}'s armor was destroyed, and he himself survived."
             else:
                 night_actions += f"The Godfather {night} slaughters {character_name} ({character_sides.get(godfather_victim)}) during the night."
