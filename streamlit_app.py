@@ -70,16 +70,12 @@ def assign_roles():
     df = pd.DataFrame({"Character": characters, "Name": names})
     st.session_state.character_names = {char: name for char, name in zip(characters, names)}
 
-def get_person_role_by_name(person_name):
+def show_person_role(person_name):
     person_role = ""
     for char, name in st.session_state.character_names.items():
         if name.lower() == person_name.lower():
             person_role = char
             break
-    return person_role
-
-def show_person_role(person_name):
-    person_role = get_person_role_by_name(person_name)
     st.write(f"{person_name}'s role is {person_role} ({character_sides.get(person_role)})")
 
 def display_night_section(night):
@@ -115,7 +111,7 @@ def display_night_results(night):
     elif godfather_ability == "kills":
         if godfather_victim:
             character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
-            character_role = get_person_role_by_name(character_name)
+            character_role = character_sides.get(godfather_victim)
             if character_role == "Citizen" and godfather_victim == "Leon":
                 night_actions += f"The Godfather {night} shot {character_name} ({character_role}) with an arrow, but {character_name}'s armor was destroyed, and he himself survived."
             else:
@@ -139,4 +135,3 @@ def display_night_results(night):
 
 if __name__ == "__main__":
     main()
-
