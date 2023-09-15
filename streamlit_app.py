@@ -9,9 +9,12 @@ characters = [
     "Simple Citizen 2", "Simple Citizen 3"
 ]
 
-# Initialize a dictionary to store names for each character
-if 'character_names' not in st.session_state:
-    st.session_state.character_names = {char: "" for char in characters}
+# Initialize a dictionary to store names for each character for Night 1 and Night 2
+if 'character_names_1' not in st.session_state:
+    st.session_state.character_names_1 = {char: "" for char in characters}
+
+if 'character_names_2' not in st.session_state:
+    st.session_state.character_names_2 = {char: "" for char in characters}
 
 # Initialize Godfather's and Matador's abilities and victims for Night 1 and Night 2
 if 'godfather_ability_1' not in st.session_state:
@@ -36,18 +39,18 @@ if 'matador_victim_2' not in st.session_state:
 def main():
     st.title("Character Name List App")
 
-    # Create input boxes for entering names with labels "Person 1" to "Person 11"
-    st.header("Enter Names:")
+    # Create input boxes for entering names with labels "Person 1" to "Person 11" for Night 1
+    st.header("Enter Names (Night 1):")
     for i, char in enumerate(characters):
-        st.session_state.character_names[char] = st.text_input(f"Person {i+1}:", st.session_state.character_names[char])
+        st.session_state.character_names_1[char] = st.text_input(f"Person {i+1}:", st.session_state.character_names_1[char])
 
-    # Create a button to assign roles
-    if st.button("Assign Role"):
-        assign_roles()
+    # Create a button to assign roles for Night 1
+    if st.button("Assign Role (Night 1)"):
+        assign_roles(1)
 
-    # Display the table only after assigning roles
-    if any(st.session_state.character_names.values()):
-        df = pd.DataFrame({"Character": characters, "Name": [st.session_state.character_names[char] for char in characters]})
+    # Display the table for Night 1 only after assigning roles
+    if any(st.session_state.character_names_1.values()):
+        df = pd.DataFrame({"Character": characters, "Name": [st.session_state.character_names_1[char] for char in characters]})
         st.table(df.set_index("Character"))
 
     # Section for Night 1
@@ -66,6 +69,20 @@ def main():
     if st.button("Ability Actions 1"):
         display_ability_actions(1)
 
+    # Create input boxes for entering names with labels "Person 1" to "Person 11" for Night 2
+    st.header("Enter Names (Night 2):")
+    for i, char in enumerate(characters):
+        st.session_state.character_names_2[char] = st.text_input(f"Person {i+1}:", st.session_state.character_names_2[char])
+
+    # Create a button to assign roles for Night 2
+    if st.button("Assign Role (Night 2)"):
+        assign_roles(2)
+
+    # Display the table for Night 2 only after assigning roles
+    if any(st.session_state.character_names_2.values()):
+        df = pd.DataFrame({"Character": characters, "Name": [st.session_state.character_names_2[char] for char in characters]})
+        st.table(df.set_index("Character"))
+
     # Section for Night 2
     st.header("During the Night 2")
     st.subheader("The Role of the Godfather 2")
@@ -82,21 +99,32 @@ def main():
     if st.button("Ability Actions 2"):
         display_ability_actions(2)
 
-def assign_roles():
-    # Shuffle the names list to randomize the names
-    names = list(st.session_state.character_names.values())
+def assign_roles(night):
+    # Shuffle the names list to randomize the names for the specified night
+    if night == 1:
+        names = list(st.session_state.character_names_1.values())
+    else:
+        names = list(st.session_state.character_names_2.values())
     random.shuffle(names)
 
-    # Assign randomized names to the table
+    # Assign randomized names to the table for the specified night
     df = pd.DataFrame({"Character": characters, "Name": names})
-    st.session_state.character_names = {char: name for char, name in zip(characters, names)}
+    if night == 1:
+        st.session_state.character_names_1 = {char: name for char, name in zip(characters, names)}
+    else:
+        st.session_state.character_names_2 = {char: name for char, name in zip(characters, names)}
 
 def display_ability_actions(night):
-    godfather_ability = st.session_state[f'godfather_ability_{night}']
-    godfather_victim = st.session_state[f'godfather_victim_{night}']
-    matador_ability_message = ""
-
-    matador_victim = st.session_state[f'matador_victim_{night}']
+    if night == 1:
+        godfather_ability = st.session_state.godfather_ability_1
+        godfather_victim = st.session_state.godfather_victim_1
+        matador_ability_message = ""
+        matador_victim = st.session_state.matador_victim_1
+    else:
+        godfather_ability = st.session_state.godfather_ability_2
+        godfather_victim = st.session_state.godfather_victim_2
+        matador_ability_message = ""
+        matador_victim = st.session_state.matador_victim_2
 
     if matador_victim:
         matador_ability_message = f"The Matador took the ability of {matador_victim}, who cannot use their ability."
