@@ -117,6 +117,7 @@ def display_night_results(night):
         if godfather_victim:
             character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
             character_role = get_person_role_by_name(character_name)
+            side = character_sides.get(character_role)
             if character_role == "Citizen" and godfather_victim == "Leon":
                 night_actions += f"The Godfather {night} shot {character_name} ({character_role}) with an arrow, but {character_name}'s armor was destroyed, and he himself survived."
             else:
@@ -127,6 +128,7 @@ def display_night_results(night):
         if godfather_victim:
             character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
             character_role = get_person_role_by_name(character_name)
+            side = character_sides.get(character_role)
             if character_role == "Citizen" and godfather_victim == "Leon":
                 night_actions += f"The Godfather {night} shot {character_name} ({character_role}) with an arrow, but {character_name}'s armor was destroyed, and he himself survived."
             else:
