@@ -13,28 +13,20 @@ characters = [
 if 'character_names' not in st.session_state:
     st.session_state.character_names = {char: "" for char in characters}
 
-# Initialize Godfather's and Matador's abilities and victims for Night 1 and Night 2
-if 'godfather_ability_1' not in st.session_state:
-    st.session_state.godfather_ability_1 = "doesn't kill anyone"
+# Initialize Godfather's and Matador's abilities and victims for each night
+for night in range(1, 3):
+    if f'godfather_ability_{night}' not in st.session_state:
+        st.session_state[f'godfather_ability_{night}'] = "doesn't kill anyone"
 
-if 'godfather_victim_1' not in st.session_state:
-    st.session_state.godfather_victim_1 = ""
+    if f'godfather_victim_{night}' not in st.session_state:
+        st.session_state[f'godfather_victim_{night}'] = ""
 
-if 'matador_victim_1' not in st.session_state:
-    st.session_state.matador_victim_1 = ""
+    if f'matador_victim_{night}' not in st.session_state:
+        st.session_state[f'matador_victim_{night}'] = ""
 
-if 'godfather_ability_2' not in st.session_state:
-    st.session_state.godfather_ability_2 = "doesn't kill anyone"
-
-if 'godfather_victim_2' not in st.session_state:
-    st.session_state.godfather_victim_2 = ""
-
-if 'matador_victim_2' not in st.session_state:
-    st.session_state.matador_victim_2 = ""
-
-# Initialize a variable to store the text for Night 1 actions
-if 'night_1_actions' not in st.session_state:
-    st.session_state.night_1_actions = ""
+# Initialize a list to store the results of each night
+if 'night_results' not in st.session_state:
+    st.session_state.night_results = []
 
 # Create a Streamlit app
 def main():
@@ -54,41 +46,23 @@ def main():
         df = pd.DataFrame({"Character": characters, "Name": [st.session_state.character_names[char] for char in characters]})
         st.table(df.set_index("Character"))
 
-    # Section for Night 1
-    st.header("During the Night 1")
-    st.subheader("The Role of the Godfather 1")
-    godfather_ability_1 = st.selectbox("Choose Godfather's Ability (Night 1):", ["doesn't kill anyone", "kills", "slaughters"])
-    st.session_state.godfather_ability_1 = godfather_ability_1
-    godfather_victim_1 = st.text_input("Enter Victim's Name (if applicable) (Night 1):")
-    st.session_state.godfather_victim_1 = godfather_victim_1
+    # Section for each night
+    for night in range(1, 3):
+        st.header(f"During the Night {night}")
+        st.subheader(f"The Role of the Godfather {night}")
+        godfather_ability = st.selectbox(f"Choose Godfather's Ability (Night {night}):", ["doesn't kill anyone", "kills", "slaughters"])
+        st.session_state[f'godfather_ability_{night}'] = godfather_ability
+        godfather_victim = st.text_input(f"Enter Victim's Name (if applicable) (Night {night}):")
+        st.session_state[f'godfather_victim_{night}'] = godfather_victim
 
-    st.subheader("The Role of the Matador 1")
-    matador_victim_1 = st.text_input("Enter Matador's Target's Name (if applicable) (Night 1):")
-    st.session_state.matador_victim_1 = matador_victim_1
+        st.subheader(f"The Role of the Matador {night}")
+        matador_victim = st.text_input(f"Enter Matador's Target's Name (if applicable) (Night {night}):")
+        st.session_state[f'matador_victim_{night}'] = matador_victim
 
-    # Button to display ability actions for Night 1
-    if st.button("Ability Actions 1"):
-        night_1_actions = display_ability_actions(1)
-        st.session_state.night_1_actions = night_1_actions
-
-    # Section for Night 2
-    st.header("During the Night 2")
-    st.subheader("The Role of the Godfather 2")
-    godfather_ability_2 = st.selectbox("Choose Godfather's Ability (Night 2):", ["doesn't kill anyone", "kills", "slaughters"])
-    st.session_state.godfather_ability_2 = godfather_ability_2
-    godfather_victim_2 = st.text_input("Enter Victim's Name (if applicable) (Night 2):")
-    st.session_state.godfather_victim_2 = godfather_victim_2
-
-    st.subheader("The Role of the Matador 2")
-    matador_victim_2 = st.text_input("Enter Matador's Target's Name (if applicable) (Night 2):")
-    st.session_state.matador_victim_2 = matador_victim_2
-
-    # Button to display ability actions for Night 2
-    if st.button("Ability Actions 2"):
-        night_1_actions = st.session_state.night_1_actions  # Retrieve Night 1 actions
-        night_2_actions = display_ability_actions(2)
-        st.write(night_1_actions)  # Display Night 1 actions
-        st.write(night_2_actions)  # Display Night 2 actions
+        # Button to display ability actions for the current night
+        if st.button(f"Ability Actions {night}"):
+            night_results = display_ability_actions(night)
+            st.write(night_results)  # Display and record night results
 
 def assign_roles():
     # Shuffle the names list to randomize the names
@@ -103,7 +77,6 @@ def display_ability_actions(night):
     godfather_ability = st.session_state[f'godfather_ability_{night}']
     godfather_victim = st.session_state[f'godfather_victim_{night}']
     matador_ability_message = ""
-
     matador_victim = st.session_state[f'matador_victim_{night}']
 
     if matador_victim:
@@ -112,19 +85,22 @@ def display_ability_actions(night):
     night_actions = ""
 
     if godfather_ability == "doesn't kill anyone":
-        night_actions += "The Godfather doesn't kill anyone during the night.\n"
+        night_actions += f"The Godfather {night} doesn't kill anyone during the night."
     elif godfather_ability == "kills":
         if godfather_victim:
-            night_actions += f"The Godfather kills {godfather_victim} during the night.\n"
+            night_actions += f"The Godfather {night} kills {godfather_victim} during the night."
         else:
-            night_actions += "The Godfather kills someone during the night.\n"
+            night_actions += f"The Godfather {night} kills someone during the night."
     elif godfather_ability == "slaughters":
         if godfather_victim:
-            night_actions += f"The Godfather slaughters {godfather_victim} during the night.\n"
+            night_actions += f"The Godfather {night} slaughters {godfather_victim} during the night."
         else:
-            night_actions += "The Godfather slaughters someone during the night.\n"
+            night_actions += f"The Godfather {night} slaughters someone during the night."
 
-    night_actions += matador_ability_message
+    night_actions += f"\n{matador_ability_message}"
+
+    # Append night actions to the list of night results
+    st.session_state.night_results.append(night_actions)
 
     return night_actions
 
