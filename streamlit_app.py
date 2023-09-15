@@ -45,10 +45,15 @@ def main():
     if st.button("Assign Role"):
         assign_roles()
 
-    # Display the table only after assigning roles
+    # Display the table of names and roles
     if any(st.session_state.character_names.values()):
         df = pd.DataFrame({"Character": characters, "Name": [st.session_state.character_names[char] for char in characters]})
         st.table(df.set_index("Character"))
+
+    # Input box for entering a person's name
+    person_name = st.text_input("Enter Person's Name:")
+    if st.button("Show Person's Role"):
+        show_person_role(person_name)
 
     # Section for Night 1
     display_night_section(1)
@@ -64,6 +69,14 @@ def assign_roles():
     # Assign randomized names to the table
     df = pd.DataFrame({"Character": characters, "Name": names})
     st.session_state.character_names = {char: name for char, name in zip(characters, names)}
+
+def show_person_role(person_name):
+    person_role = ""
+    for char, name in st.session_state.character_names.items():
+        if name.lower() == person_name.lower():
+            person_role = char
+            break
+    st.write(f"{person_name}'s role is {person_role} ({character_sides.get(person_role)})")
 
 def display_night_section(night):
     st.header(f"During the Night {night}")
