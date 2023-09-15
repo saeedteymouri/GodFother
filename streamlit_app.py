@@ -53,20 +53,6 @@ def main():
     if st.button("Ability Actions 1"):
         display_ability_actions(1)
 
-    # Create input boxes for entering names with labels "Person 1" to "Person 11" for Night 2
-    st.header("Enter Names (Night 2):")
-    for i, char in enumerate(characters):
-        character_names_2[char] = st.text_input(f"Person {i+1} (Night 2):", character_names_2[char])
-
-    # Create a button to assign roles for Night 2
-    if st.button("Assign Role (Night 2)"):
-        assign_roles(2)
-
-    # Display the table for Night 2 only after assigning roles
-    if any(character_names_2.values()):
-        df = pd.DataFrame({"Character": characters, "Name": [character_names_2[char] for char in characters]})
-        st.table(df.set_index("Character"))
-
     # Section for Night 2
     st.header("During the Night 2")
     st.subheader("The Role of the Godfather 2")
