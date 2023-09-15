@@ -53,13 +53,13 @@ def main():
     # Section for Night 1
     st.header("During the Night 1")
     st.subheader("The Role of the Godfather 1")
-    godfather_ability_1 = st.selectbox("Choose Godfather's Ability:", ["doesn't kill anyone", "kills", "slaughters"])
+    godfather_ability_1 = st.selectbox("Choose Godfather's Ability (Night 1):", ["doesn't kill anyone", "kills", "slaughters"])
     st.session_state.godfather_ability_1 = godfather_ability_1
-    godfather_victim_1 = st.text_input("Enter Victim's Name (if applicable):")
+    godfather_victim_1 = st.text_input("Enter Victim's Name (if applicable) (Night 1):")
     st.session_state.godfather_victim_1 = godfather_victim_1
 
     st.subheader("The Role of the Matador 1")
-    matador_victim_1 = st.text_input("Enter Matador's Target's Name (if applicable):")
+    matador_victim_1 = st.text_input("Enter Matador's Target's Name (if applicable) (Night 1):")
     st.session_state.matador_victim_1 = matador_victim_1
 
     # Button to display ability actions for Night 1
@@ -69,13 +69,13 @@ def main():
     # Section for Night 2
     st.header("During the Night 2")
     st.subheader("The Role of the Godfather 2")
-    godfather_ability_2 = st.selectbox("Choose Godfather's Ability:", ["doesn't kill anyone", "kills", "slaughters"])
+    godfather_ability_2 = st.selectbox("Choose Godfather's Ability (Night 2):", ["doesn't kill anyone", "kills", "slaughters"])
     st.session_state.godfather_ability_2 = godfather_ability_2
-    godfather_victim_2 = st.text_input("Enter Victim's Name (if applicable):")
+    godfather_victim_2 = st.text_input("Enter Victim's Name (if applicable) (Night 2):")
     st.session_state.godfather_victim_2 = godfather_victim_2
 
     st.subheader("The Role of the Matador 2")
-    matador_victim_2 = st.text_input("Enter Matador's Target's Name (if applicable):")
+    matador_victim_2 = st.text_input("Enter Matador's Target's Name (if applicable) (Night 2):")
     st.session_state.matador_victim_2 = matador_victim_2
 
     # Button to display ability actions for Night 2
@@ -97,6 +97,7 @@ def display_ability_actions(night):
     matador_ability_message = ""
 
     matador_victim = st.session_state[f'matador_victim_{night}']
+
     if matador_victim:
         matador_ability_message = f"The Matador took the ability of {matador_victim}, who cannot use their ability."
 
