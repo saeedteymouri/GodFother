@@ -42,7 +42,7 @@ def main():
     # Create input boxes for entering names with labels "Person 1" to "Person 11" for Night 1
     st.header("Enter Names (Night 1):")
     for i, char in enumerate(characters):
-        st.session_state.character_names_1[char] = st.text_input(f"Person {i+1}:", st.session_state.character_names_1[char])
+        st.session_state.character_names_1[char] = st.text_input(f"Person {i+1} (Night 1):", st.session_state.character_names_1[char], key=f"char_name_1_{i}")
 
     # Create a button to assign roles for Night 1
     if st.button("Assign Role (Night 1)"):
@@ -56,13 +56,13 @@ def main():
     # Section for Night 1
     st.header("During the Night 1")
     st.subheader("The Role of the Godfather 1")
-    godfather_ability_1 = st.selectbox("Choose Godfather's Ability (Night 1):", ["doesn't kill anyone", "kills", "slaughters"])
+    godfather_ability_1 = st.selectbox("Choose Godfather's Ability (Night 1):", ["doesn't kill anyone", "kills", "slaughters"], key="godfather_ability_1")
     st.session_state.godfather_ability_1 = godfather_ability_1
-    godfather_victim_1 = st.text_input("Enter Victim's Name (if applicable) (Night 1):")
+    godfather_victim_1 = st.text_input("Enter Victim's Name (if applicable) (Night 1):", key="godfather_victim_1")
     st.session_state.godfather_victim_1 = godfather_victim_1
 
     st.subheader("The Role of the Matador 1")
-    matador_victim_1 = st.text_input("Enter Matador's Target's Name (if applicable) (Night 1):")
+    matador_victim_1 = st.text_input("Enter Matador's Target's Name (if applicable) (Night 1):", key="matador_victim_1")
     st.session_state.matador_victim_1 = matador_victim_1
 
     # Button to display ability actions for Night 1
@@ -72,7 +72,7 @@ def main():
     # Create input boxes for entering names with labels "Person 1" to "Person 11" for Night 2
     st.header("Enter Names (Night 2):")
     for i, char in enumerate(characters):
-        st.session_state.character_names_2[char] = st.text_input(f"Person {i+1}:", st.session_state.character_names_2[char])
+        st.session_state.character_names_2[char] = st.text_input(f"Person {i+1} (Night 2):", st.session_state.character_names_2[char], key=f"char_name_2_{i}")
 
     # Create a button to assign roles for Night 2
     if st.button("Assign Role (Night 2)"):
@@ -86,13 +86,13 @@ def main():
     # Section for Night 2
     st.header("During the Night 2")
     st.subheader("The Role of the Godfather 2")
-    godfather_ability_2 = st.selectbox("Choose Godfather's Ability (Night 2):", ["doesn't kill anyone", "kills", "slaughters"])
+    godfather_ability_2 = st.selectbox("Choose Godfather's Ability (Night 2):", ["doesn't kill anyone", "kills", "slaughters"], key="godfather_ability_2")
     st.session_state.godfather_ability_2 = godfather_ability_2
-    godfather_victim_2 = st.text_input("Enter Victim's Name (if applicable) (Night 2):")
+    godfather_victim_2 = st.text_input("Enter Victim's Name (if applicable) (Night 2):", key="godfather_victim_2")
     st.session_state.godfather_victim_2 = godfather_victim_2
 
     st.subheader("The Role of the Matador 2")
-    matador_victim_2 = st.text_input("Enter Matador's Target's Name (if applicable) (Night 2):")
+    matador_victim_2 = st.text_input("Enter Matador's Target's Name (if applicable) (Night 2):", key="matador_victim_2")
     st.session_state.matador_victim_2 = matador_victim_2
 
     # Button to display ability actions for Night 2
