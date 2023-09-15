@@ -94,10 +94,9 @@ def assign_roles():
 def display_ability_actions(night):
     godfather_ability = st.session_state[f'godfather_ability_{night}']
     godfather_victim = st.session_state[f'godfather_victim_{night}']
-    matador_victim = st.session_state[f'matador_victim_{night}']
-
     matador_ability_message = ""
 
+    matador_victim = st.session_state[f'matador_victim_{night}']
     if matador_victim:
         matador_ability_message = f"The Matador took the ability of {matador_victim}, who cannot use their ability."
 
@@ -105,4 +104,16 @@ def display_ability_actions(night):
         st.write("The Godfather doesn't kill anyone during the night.")
     elif godfather_ability == "kills":
         if godfather_victim:
-            st.write(f"The Godfather kills {godfather_victim} during
+            st.write(f"The Godfather kills {godfather_victim} during the night.")
+        else:
+            st.write("The Godfather kills someone during the night.")
+    elif godfather_ability == "slaughters":
+        if godfather_victim:
+            st.write(f"The Godfather slaughters {godfather_victim} during the night.")
+        else:
+            st.write("The Godfather slaughters someone during the night.")
+
+    st.write(matador_ability_message)
+
+if __name__ == "__main__":
+    main()
