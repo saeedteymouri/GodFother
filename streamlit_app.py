@@ -80,7 +80,8 @@ def get_person_role_by_name(person_name):
 
 def show_person_role(person_name):
     person_role = get_person_role_by_name(person_name)
-    st.write(f"{person_name}'s role is {person_role} ({character_sides.get(person_role)})")
+    side = character_sides.get(person_role)
+    st.write(f"{person_name}'s role is {person_role} ({side})")
 
 def display_night_section(night):
     st.header(f"During the Night {night}")
@@ -139,4 +140,3 @@ def display_night_results(night):
 
 if __name__ == "__main__":
     main()
-
