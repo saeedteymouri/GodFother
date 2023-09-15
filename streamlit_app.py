@@ -82,12 +82,18 @@ def display_ability_actions(night):
         night_actions += f"The Godfather {night} doesn't kill anyone during the night."
     elif godfather_ability == "kills":
         if godfather_victim:
-            night_actions += f"The Godfather {night} kills {godfather_victim} during the night."
+            if godfather_victim == "Leon":
+                night_actions += f"The Godfather {night} kills Leon during the night, but Leon's armor is destroyed, and he survives."
+            else:
+                night_actions += f"The Godfather {night} kills {godfather_victim} during the night."
         else:
             night_actions += f"The Godfather {night} kills someone during the night."
     elif godfather_ability == "slaughters":
         if godfather_victim:
-            night_actions += f"The Godfather {night} slaughters {godfather_victim} during the night."
+            if godfather_victim == "Leon":
+                night_actions += f"The Godfather {night} slaughters Leon during the night, but Leon's armor is destroyed, and he survives."
+            else:
+                night_actions += f"The Godfather {night} slaughters {godfather_victim} during the night."
         else:
             night_actions += f"The Godfather {night} slaughters someone during the night."
 
