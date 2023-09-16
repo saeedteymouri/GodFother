@@ -32,6 +32,15 @@ if 'character_names' not in st.session_state:
 if 'night_data' not in st.session_state:
     st.session_state.night_data = {}
 
+# Initialize flags for abilities being disabled by Matador
+if 'matador_disabled_abilities' not in st.session_state:
+    st.session_state.matador_disabled_abilities = {
+        "Leon": False,
+        "Dr. Watson": False,
+        "Citizen Kane": False,
+        "Constantine": False
+    }
+
 # Create a Streamlit app
 def main():
     st.title("Character Name List App")
@@ -92,21 +101,25 @@ def display_night_section(night):
     st.subheader(f"The Role of the Matador {night}")
     matador_target = st.text_input(f"Enter Matador's Target's Name (if applicable) (Night {night}):")
 
-    # Doctor Watson Section
-    st.subheader(f"The Role of Dr. Watson {night}")
-    doctor_save = st.text_input(f"Enter the name Dr. Watson saved (if applicable) (Night {night}):")
+    # Doctor Watson Section (disabled if Matador took ability)
+    matador_disabled_watson = st.session_state.matador_disabled_abilities["Dr. Watson"]
+    st.subheader(f"The Role of Dr. Watson {night}" + (" (Ability Disabled by Matador)" if matador_disabled_watson else ""))
+    doctor_save = st.text_input(f"Enter the name Dr. Watson saved (if applicable) (Night {night}):", disabled=matador_disabled_watson)
 
-    # Leon Section
-    st.subheader(f"The Role of Leon {night}")
-    leon_target = st.text_input(f"Enter Leon's Target's Name (if applicable) (Night {night}):")
+    # Leon Section (disabled if Matador took ability)
+    matador_disabled_leon = st.session_state.matador_disabled_abilities["Leon"]
+    st.subheader(f"The Role of Leon {night}" + (" (Ability Disabled by Matador)" if matador_disabled_leon else ""))
+    leon_target = st.text_input(f"Enter the name Leon shot (if applicable) (Night {night}):", disabled=matador_disabled_leon)
 
-    # Citizen Kane Section
-    st.subheader(f"The Role of Citizen Kane {night}")
-    kane_inquiry = st.text_input(f"Enter the name Citizen Kane inquires about (if applicable) (Night {night}):")
+    # Citizen Kane Section (disabled if Matador took ability)
+    matador_disabled_kane = st.session_state.matador_disabled_abilities["Citizen Kane"]
+    st.subheader(f"The Role of Citizen Kane {night}" + (" (Ability Disabled by Matador)" if matador_disabled_kane else ""))
+    kane_inquiry = st.text_input(f"Enter the name Citizen Kane inquired about (if applicable) (Night {night}):", disabled=matador_disabled_kane)
 
-    # Constantine Section
-    st.subheader(f"The Role of Constantine {night}")
-    constantine_resurrect = st.text_input(f"Enter the name Constantine resurrects (if applicable) (Night {night}):")
+    # Constantine Section (disabled if Matador took ability)
+    matador_disabled_constantine = st.session_state.matador_disabled_abilities["Constantine"]
+    st.subheader(f"The Role of Constantine {night}" + (" (Ability Disabled by Matador)" if matador_disabled_constantine else ""))
+    constantine_resurrect = st.text_input(f"Enter the name Constantine resurrected (if applicable) (Night {night}):", disabled=matador_disabled_constantine)
 
     # Button to display night results for the current night
     if st.button(f"Night Result {night}"):
@@ -162,15 +175,13 @@ def display_night_results(night):
             if character_role == "Citizen" and godfather_victim == "Leon":
                 night_actions.append(f"The Godfather {night} shot {character_name} ({character_role}) with an arrow, but {character_name}'s armor was destroyed, and he himself survived.")
             else:
-                night_actions.append(f"The Godfather {night} kills {character_name} ({character_role}) during the night.")
+                night_actions.append(f"The Godfather {night} slaughters {character_name} ({character_role}) during the night.")
         else:
-            night_actions.append(f"The Godfather {night} kills someone during the night.")
+            night_actions.append(f"The Godfather {night} slaughters someone during the night.")
 
     night_actions.extend([matador_ability_message, doctor_save_message, leon_shoot_message, kane_inquiry_message, constantine_resurrect_message])
-    night_actions = [action for action in night_actions if action]  # Remove empty messages
-    night_result_message = "\n".join(night_actions)
-    st.write(f"Night {night} Results:")
-    st.write(night_result_message)
+
+    st.write("\n".join(night_actions))
 
 if __name__ == "__main__":
     main()
