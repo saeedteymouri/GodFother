@@ -90,15 +90,22 @@ def display_night_section(night):
     # Create input box for Dr. Watson to save a person's name
     saved_person = st.text_input(f"Enter Person's Name to Save (if applicable) (Night {night}):")
 
-    godfather_ability = st.selectbox(f"Choose Godfather's Ability (Night {night}):", ["doesn't kill anyone", "kills", "slaughters"])
-    godfather_victim = st.text_input(f"Enter Victim's Name (if applicable) (Night {night}):")
+    godfather_ability = st.selectbox(f"Choose Godfather's Ability (Night {night}):", ["doesn't kill anyone", "kills", "slaughters", "bribery"])
+    
+    # Display different input boxes based on Godfather's ability
+    if godfather_ability == "kills":
+        godfather_victim = st.text_input(f"Enter Victim's Name (if applicable) (Night {night}):")
+    elif godfather_ability == "bribery":
+        bribery_target = st.text_input(f"Enter Target's Name for Bribery (if applicable) (Night {night}):")
+    
     matador_victim = st.text_input(f"Enter Matador's Target's Name (if applicable) (Night {night}):")
 
     # Button to display night results for the current night
     if st.button(f"Night Result {night}"):
         night_data = {
             "Godfather Ability": godfather_ability,
-            "Godfather Victim": godfather_victim,
+            "Godfather Victim": godfather_victim if godfather_ability == "kills" else "",
+            "Bribery Target": bribery_target if godfather_ability == "bribery" else "",
             "Matador Victim": matador_victim
         }
 
@@ -112,9 +119,11 @@ def display_night_results(night):
     night_data = st.session_state.night_data.get(night, {})
     godfather_ability = night_data.get("Godfather Ability", "doesn't kill anyone")
     godfather_victim = night_data.get("Godfather Victim", "")
+    bribery_target = night_data.get("Bribery Target", "")
     matador_victim = night_data.get("Matador Victim", "")
     doctor_saved = st.session_state.doctor_saved.get(night, "")
     matador_ability_message = f"The Matador took the ability of {matador_victim} ({get_person_role_by_name(matador_victim)}), who cannot use their ability." if matador_victim else ""
+    bribery_message = f"The Godfather used bribery on {bribery_target} ({get_person_role_by_name(bribery_target)})." if bribery_target else ""
 
     night_actions = ""
 
@@ -140,6 +149,9 @@ def display_night_results(night):
                 night_actions += f"The Godfather {night} slaughters {character_name} ({character_sides.get(character_role)}) during the night."
         else:
             night_actions += f"The Godfather {night} slaughters someone during the night."
+    elif godfather_ability == "bribery":
+        if bribery_target:
+            night_actions += bribery_message
 
     if doctor_saved:
         night_actions += f" Dr. Watson saved {doctor_saved} ({character_sides.get(get_person_role_by_name(doctor_saved))})."
