@@ -123,10 +123,9 @@ def display_night_results(night):
     matador_victim = night_data.get("Matador Victim", "")
     doctor_saved = st.session_state.doctor_saved.get(night, "")
     matador_ability_message = f"The Matador took the ability of {matador_victim} ({get_person_role_by_name(matador_victim)}), who cannot use their ability." if matador_victim else ""
-    bribery_message = f"The Godfather used bribery on {bribery_target} ({get_person_role_by_name(bribery_target)})." if bribery_target else ""
-
+    
     night_actions = ""
-
+    
     if godfather_ability == "doesn't kill anyone":
         night_actions += f"The Godfather {night} doesn't kill anyone during the night."
     elif godfather_ability == "kills":
@@ -146,12 +145,12 @@ def display_night_results(night):
             if character_role == "Citizen" and godfather_victim == "Leon":
                 night_actions += f"The Godfather {night} shot {character_name} ({character_sides.get(character_role)}) with an arrow, but {character_name}'s armor was destroyed, and he himself survived."
             else:
-                night_actions += f"The Godfather {night} slaughters {character_name} ({character_sides.get(character_role)}) during the night."
+                night_actions += f"The Godfather {night} kills {character_name} ({character_sides.get(character_role)}) during the night."
         else:
-            night_actions += f"The Godfather {night} slaughters someone during the night."
+            night_actions += f"The Godfather {night} kills someone during the night."
     elif godfather_ability == "bribery":
-        if bribery_target:
-            night_actions += bribery_message
+        if bribery_target and get_person_role_by_name(bribery_target) == "Simple Citizen":
+            night_actions += f"The Godfather {night} bribed {bribery_target} ({character_sides.get(get_person_role_by_name(bribery_target))})."
 
     if doctor_saved:
         night_actions += f" Dr. Watson saved {doctor_saved} ({character_sides.get(get_person_role_by_name(doctor_saved))})."
