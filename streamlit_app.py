@@ -100,14 +100,19 @@ def display_night_section(night):
     st.subheader(f"The Role of Leon {night}")
     leon_target = st.text_input(f"Enter Leon's Target's Name (if applicable) (Night {night}):")
 
+    # Citizen Kane Section
+    st.subheader(f"The Role of Citizen Kane {night}")
+    kane_inquiry = st.text_input(f"Enter the name Citizen Kane inquires about (if applicable) (Night {night}):")
+
     # Button to display night results for the current night
     if st.button(f"Night Result {night}"):
         night_data = {
             "Godfather Ability": godfather_ability,
             "Godfather Victim": godfather_victim,
-            "Matador Victim": matador_victim,
+            "Matador Target": matador_victim,
             "Doctor Save": doctor_save,
-            "Leon Target": leon_target
+            "Leon Target": leon_target,
+            "Kane Inquiry": kane_inquiry
         }
 
         # Store night-specific data
@@ -119,12 +124,15 @@ def display_night_results(night):
     night_data = st.session_state.night_data.get(night, {})
     godfather_ability = night_data.get("Godfather Ability", "doesn't kill anyone")
     godfather_victim = night_data.get("Godfather Victim", "")
-    matador_victim = night_data.get("Matador Victim", "")
+    matador_target = night_data.get("Matador Target", "")
     doctor_save = night_data.get("Doctor Save", "")
     leon_target = night_data.get("Leon Target", "")
-    matador_ability_message = f"The Matador took the ability of {matador_victim} ({get_person_role_by_name(matador_victim)}), who cannot use their ability." if matador_victim else ""
+    kane_inquiry = night_data.get("Kane Inquiry", "")
+
+    matador_ability_message = f"The Matador took the ability of {matador_target} ({get_person_role_by_name(matador_target)}), who cannot use their ability." if matador_target else ""
     doctor_save_message = f"Dr. Watson saved {doctor_save} ({get_person_role_by_name(doctor_save)}) from being targeted." if doctor_save else ""
     leon_shoot_message = f"Leon shot {leon_target} ({get_person_role_by_name(leon_target)}) during the night." if leon_target else ""
+    kane_inquiry_message = f"Citizen Kane inquired about {kane_inquiry} ({get_person_role_by_name(kane_inquiry)}) during the night." if kane_inquiry else ""
 
     night_actions = []
 
@@ -151,10 +159,7 @@ def display_night_results(night):
         else:
             night_actions.append(f"The Godfather {night} slaughters someone during the night.")
 
-    night_actions.append(matador_ability_message)
-    night_actions.append(doctor_save_message)
-    night_actions.append(leon_shoot_message)
-
+    night_actions.extend([matador_ability_message, doctor_save_message, leon_shoot_message, kane_inquiry_message])
     night_actions = [action for action in night_actions if action]  # Remove empty messages
     night_result_message = "\n".join(night_actions)
     st.write(f"Night {night} Results:")
