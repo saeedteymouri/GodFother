@@ -32,6 +32,10 @@ if 'character_names' not in st.session_state:
 if 'night_data' not in st.session_state:
     st.session_state.night_data = {}
 
+# Initialize a dictionary to store Dr. Watson's saved person every night
+if 'doctor_saved' not in st.session_state:
+    st.session_state.doctor_saved = {}
+
 # Create a Streamlit app
 def main():
     st.title("Character Name List App")
@@ -55,7 +59,7 @@ def main():
     if st.button("Show Person's Role"):
         show_person_role(person_name)
 
-    # Sections for all 8 nights
+    # Section for each night
     for night in range(1, 9):
         display_night_section(night)
 
@@ -82,6 +86,10 @@ def show_person_role(person_name):
 
 def display_night_section(night):
     st.header(f"During the Night {night}")
+
+    # Create input box for Dr. Watson to save a person's name
+    saved_person = st.text_input(f"Enter Person's Name to Save (if applicable) (Night {night}):")
+
     godfather_ability = st.selectbox(f"Choose Godfather's Ability (Night {night}):", ["doesn't kill anyone", "kills", "slaughters"])
     godfather_victim = st.text_input(f"Enter Victim's Name (if applicable) (Night {night}):")
     matador_victim = st.text_input(f"Enter Matador's Target's Name (if applicable) (Night {night}):")
@@ -96,6 +104,7 @@ def display_night_section(night):
 
         # Store night-specific data
         st.session_state.night_data[night] = night_data
+        st.session_state.doctor_saved[night] = saved_person
 
         display_night_results(night)
 
@@ -104,22 +113,36 @@ def display_night_results(night):
     godfather_ability = night_data.get("Godfather Ability", "doesn't kill anyone")
     godfather_victim = night_data.get("Godfather Victim", "")
     matador_victim = night_data.get("Matador Victim", "")
+    doctor_saved = st.session_state.doctor_saved.get(night, "")
     matador_ability_message = f"The Matador took the ability of {matador_victim} ({get_person_role_by_name(matador_victim)}), who cannot use their ability." if matador_victim else ""
 
     night_actions = ""
 
     if godfather_ability == "doesn't kill anyone":
         night_actions += f"The Godfather {night} doesn't kill anyone during the night."
-    elif godfather_ability in ["kills", "slaughters"]:
+    elif godfather_ability == "kills":
         if godfather_victim:
             character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
             character_role = get_person_role_by_name(character_name)
             if character_role == "Citizen" and godfather_victim == "Leon":
-                night_actions += f"The Godfather {night} shot {character_name} ({character_role}) with an arrow, but {character_name}'s armor was destroyed, and he himself survived."
+                night_actions += f"The Godfather {night} shot {character_name} ({character_sides.get(character_role)}) with an arrow, but {character_name}'s armor was destroyed, and he himself survived."
             else:
-                night_actions += f"The Godfather {night} kills {character_name} ({character_role}) during the night."
+                night_actions += f"The Godfather {night} kills {character_name} ({character_sides.get(character_role)}) during the night."
         else:
             night_actions += f"The Godfather {night} kills someone during the night."
+    elif godfather_ability == "slaughters":
+        if godfather_victim:
+            character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
+            character_role = character_sides.get(godfather_victim)
+            if character_role == "Citizen" and godfather_victim == "Leon":
+                night_actions += f"The Godfather {night} shot {character_name} ({character_sides.get(character_role)}) with an arrow, but {character_name}'s armor was destroyed, and he himself survived."
+            else:
+                night_actions += f"The Godfather {night} slaughters {character_name} ({character_sides.get(character_role)}) during the night."
+        else:
+            night_actions += f"The Godfather {night} slaughters someone during the night."
+
+    if doctor_saved:
+        night_actions += f" Dr. Watson saved {doctor_saved} ({character_sides.get(get_person_role_by_name(doctor_saved))})."
 
     night_actions += f"\n{matador_ability_message}"
 
