@@ -133,9 +133,11 @@ def display_night_results(night):
         else:
             night_actions += f"The Godfather {night} slaughters someone during the night."
 
-    night_actions += f"\n{matador_ability_message}"
+    if matador_victim:
+        matador_target_role = get_person_role_by_name(matador_victim)
+        night_actions += f" Matador took {matador_victim}'s ({matador_target_role}) ability."
 
-    st.write(night_actions)
+    st.write(f"Last night, {night_actions}")
 
 if __name__ == "__main__":
     main()
