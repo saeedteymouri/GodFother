@@ -55,7 +55,7 @@ def main():
     if st.button("Show Person's Role"):
         show_person_role(person_name)
 
-    # Section for Night 1 to 8
+    # Sections for all 8 nights
     for night in range(1, 9):
         display_night_section(night)
 
@@ -97,8 +97,6 @@ def display_night_section(night):
         # Store night-specific data
         st.session_state.night_data[night] = night_data
 
-    # Display only the night result for the current night
-    if st.session_state.night_data.get(night):
         display_night_results(night)
 
 def display_night_results(night):
@@ -112,7 +110,7 @@ def display_night_results(night):
 
     if godfather_ability == "doesn't kill anyone":
         night_actions += f"The Godfather {night} doesn't kill anyone during the night."
-    elif godfather_ability == "kills":
+    elif godfather_ability in ["kills", "slaughters"]:
         if godfather_victim:
             character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
             character_role = get_person_role_by_name(character_name)
@@ -122,16 +120,6 @@ def display_night_results(night):
                 night_actions += f"The Godfather {night} kills {character_name} ({character_role}) during the night."
         else:
             night_actions += f"The Godfather {night} kills someone during the night."
-    elif godfather_ability == "slaughters":
-        if godfather_victim:
-            character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
-            character_role = character_sides.get(godfather_victim)
-            if character_role == "Citizen" and godfather_victim == "Leon":
-                night_actions += f"The Godfather {night} shot {character_name} ({character_role}) with an arrow, but {character_name}'s armor was destroyed, and he himself survived."
-            else:
-                night_actions += f"The Godfather {night} slaughters {character_name} ({character_role}) during the night."
-        else:
-            night_actions += f"The Godfather {night} slaughters someone during the night."
 
     night_actions += f"\n{matador_ability_message}"
 
