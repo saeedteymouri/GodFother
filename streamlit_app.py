@@ -97,9 +97,9 @@ def display_night_section(night):
         # Store night-specific data
         st.session_state.night_data[night] = night_data
 
-    # Display night results for all nights
-    for i in range(1, night + 1):
-        display_night_results(i)
+    # Display only the night result for the current night
+    if st.session_state.night_data.get(night):
+        display_night_results(night)
 
 def display_night_results(night):
     night_data = st.session_state.night_data.get(night, {})
