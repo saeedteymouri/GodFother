@@ -117,27 +117,25 @@ def display_night_results(night):
             character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
             character_role = get_person_role_by_name(character_name)
             if character_role == "Citizen" and godfather_victim == "Leon":
-                night_actions += f"The Godfather {night} shot {character_name} ({character_sides.get(character_role)}) with an arrow, but {character_name}'s armor was destroyed, and he himself survived."
+                night_actions += f"The Godfather {night} shot {character_name} ({character_role}) with an arrow, but {character_name}'s armor was destroyed, and he himself survived."
             else:
-                night_actions += f"The Godfather {night} kills {character_name} ({character_sides.get(character_role)}) during the night."
+                night_actions += f"The Godfather {night} kills {character_name} ({character_role}) during the night."
         else:
             night_actions += f"The Godfather {night} kills someone during the night."
     elif godfather_ability == "slaughters":
         if godfather_victim:
             character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
-            character_role = get_person_role_by_name(character_name)
+            character_role = character_sides.get(godfather_victim)
             if character_role == "Citizen" and godfather_victim == "Leon":
-                night_actions += f"The Godfather {night} shot {character_name} ({character_sides.get(character_role)}) with an arrow, but {character_name}'s armor was destroyed, and he himself survived."
+                night_actions += f"The Godfather {night} shot {character_name} ({character_role}) with an arrow, but {character_name}'s armor was destroyed, and he himself survived."
             else:
-                night_actions += f"The Godfather {night} slaughters {character_name} ({character_sides.get(character_role)}) during the night."
+                night_actions += f"The Godfather {night} slaughters {character_name} ({character_role}) during the night."
         else:
             night_actions += f"The Godfather {night} slaughters someone during the night."
 
-    if matador_victim:
-        matador_target_role = get_person_role_by_name(matador_victim)
-        night_actions += f" Matador took {matador_victim}'s ({matador_target_role}) ability."
+    night_actions += f"\n{matador_ability_message}"
 
-    st.write(f"Last night, {night_actions}")
+    st.write(night_actions)
 
 if __name__ == "__main__":
     main()
