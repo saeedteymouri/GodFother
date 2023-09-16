@@ -106,7 +106,7 @@ def display_night_results(night):
     godfather_ability = night_data.get("Godfather Ability", "doesn't kill anyone")
     godfather_victim = night_data.get("Godfather Victim", "")
     matador_victim = night_data.get("Matador Victim", "")
-    matador_ability_message = f"The Matador took the ability of {matador_victim}, who cannot use their ability." if matador_victim else ""
+    matador_ability_message = f"The Matador took the ability of {matador_victim} ({character_role}), who cannot use their ability." if matador_victim else ""
 
     night_actions = ""
 
