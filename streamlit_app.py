@@ -24,6 +24,9 @@ character_sides = {
     "Simple Citizen 3": "Citizen"
 }
 
+# Define roles exempt from Matador's ability
+matador_exempt_roles = ["Leon", "Dr. Watson", "Citizen Kane", "Constantine"]
+
 # Initialize a dictionary to store names for each character
 if 'character_names' not in st.session_state:
     st.session_state.character_names = {char: "" for char in characters}
@@ -94,38 +97,22 @@ def display_night_section(night):
 
     # Doctor Watson Section
     st.subheader(f"The Role of Dr. Watson {night}")
-    if matador_target not in ["Leon", "Dr. Watson", "Citizen Kane", "Constantine"]:
-        doctor_save = st.text_input(f"Enter the name Dr. Watson saved (if applicable) (Night {night}):")
-    else:
-        doctor_save = ""
-        st.write("Dr. Watson's ability is disabled for the night as they were targeted by the Matador.")
+    doctor_save = st.text_input(f"Enter the name Dr. Watson saved (if applicable) (Night {night}):")
 
     # Leon Section
     st.subheader(f"The Role of Leon {night}")
-    if matador_target != "Leon":
-        leon_target = st.text_input(f"Enter Leon's Target's Name (if applicable) (Night {night}):")
-    else:
-        leon_target = ""
-        st.write("Leon's ability is disabled for the night as they were targeted by the Matador.")
+    leon_target = st.text_input(f"Enter Leon's Target's Name (if applicable) (Night {night}):")
 
     # Citizen Kane Section
     st.subheader(f"The Role of Citizen Kane {night}")
-    if matador_target != "Citizen Kane":
-        kane_inquiry = st.text_input(f"Enter Citizen Kane's Inquiry (if applicable) (Night {night}):")
-    else:
-        kane_inquiry = ""
-        st.write("Citizen Kane's ability is disabled for the night as they were targeted by the Matador.")
+    kane_inquiry = st.text_input(f"Enter the name Citizen Kane inquires about (if applicable) (Night {night}):")
 
     # Constantine Section
     st.subheader(f"The Role of Constantine {night}")
-    if matador_target != "Constantine":
-        constantine_resurrect = st.text_input(f"Enter Constantine's Resurrection (if applicable) (Night {night}):")
-    else:
-        constantine_resurrect = ""
-        st.write("Constantine's ability is disabled for the night as they were targeted by the Matador.")
+    constantine_resurrect = st.text_input(f"Enter the name Constantine resurrects (if applicable) (Night {night}):")
 
     # Button to display night results for the current night
-    if st.button(f"Announce Night {night} Results"):
+    if st.button(f"Night Result {night}"):
         night_data = {
             "Godfather Ability": godfather_ability,
             "Godfather Victim": godfather_victim,
@@ -151,7 +138,7 @@ def display_night_results(night):
     kane_inquiry = night_data.get("Kane Inquiry", "")
     constantine_resurrect = night_data.get("Constantine Resurrect", "")
 
-    matador_ability_message = f"The Matador took the ability of {matador_target} ({get_person_role_by_name(matador_target)}), who cannot use their ability." if matador_target else ""
+    matador_ability_message = f"The Matador took the ability of {matador_target} ({get_person_role_by_name(matador_target)}), who cannot use their ability." if matador_target and get_person_role_by_name(matador_target) not in matador_exempt_roles else ""
     doctor_save_message = f"Dr. Watson saved {doctor_save} ({get_person_role_by_name(doctor_save)}) from being targeted." if doctor_save else ""
     leon_shoot_message = f"Leon shot {leon_target} ({get_person_role_by_name(leon_target)}) during the night." if leon_target else ""
     kane_inquiry_message = f"Citizen Kane inquired about {kane_inquiry} ({get_person_role_by_name(kane_inquiry)}) during the night." if kane_inquiry else ""
@@ -185,7 +172,8 @@ def display_night_results(night):
     night_actions.extend([matador_ability_message, doctor_save_message, leon_shoot_message, kane_inquiry_message, constantine_resurrect_message])
     night_actions = [action for action in night_actions if action]  # Remove empty messages
     night_result_message = "\n".join(night_actions)
-    st.write(f"Night {night} Results:\n{night_result_message}")
+    st.write(f"Night {night} Results:")
+    st.write(night_result_message)
 
 if __name__ == "__main__":
     main()
