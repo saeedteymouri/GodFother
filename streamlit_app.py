@@ -145,17 +145,18 @@ def display_night_results(night):
     kane_inquiry_message = ""
     constantine_resurrect_message = ""
 
-    if matador_target:
+    disabled_roles = st.session_state.matador_disabled_roles.get(night, [])
+
+    if matador_target and "Leon" not in disabled_roles:
         matador_ability_message = f"The Matador took the ability of {matador_target} ({get_person_role_by_name(matador_target)}), who cannot use their ability."
-        disabled_role = get_person_role_by_name(matador_target)
-        if disabled_role == "Leon":
-            leon_shoot_message = f"Leon couldn't shoot anyone tonight as his ability is disabled."
-        elif disabled_role == "Dr. Watson":
-            doctor_save_message = f"Dr. Watson couldn't save anyone tonight as his ability is disabled."
-        elif disabled_role == "Citizen Kane":
-            kane_inquiry_message = f"Citizen Kane couldn't inquire about anyone tonight as his ability is disabled."
-        elif disabled_role == "Constantine":
-            constantine_resurrect_message = f"Constantine couldn't resurrect anyone tonight as his ability is disabled."
+    if doctor_save and "Dr. Watson" not in disabled_roles:
+        doctor_save_message = f"Dr. Watson saved {doctor_save} from potential harm tonight."
+    if leon_target and "Leon" not in disabled_roles:
+        leon_shoot_message = f"Leon shot {leon_target} tonight, aiming for the mafia."
+    if kane_inquiry and "Citizen Kane" not in disabled_roles:
+        kane_inquiry_message = f"Citizen Kane inquired about {kane_inquiry} tonight, searching for mafia clues."
+    if constantine_resurrect and "Constantine" not in disabled_roles:
+        constantine_resurrect_message = f"Constantine successfully resurrected {constantine_resurrect} and brought them back into the game."
 
     night_actions = []
 
