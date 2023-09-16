@@ -24,9 +24,6 @@ character_sides = {
     "Simple Citizen 3": "Citizen"
 }
 
-# Roles to exclude from Matador's announcement
-roles_to_exclude = ["Leon", "Dr. Watson", "Citizen Kane", "Constantine"]
-
 # Initialize a dictionary to store names for each character
 if 'character_names' not in st.session_state:
     st.session_state.character_names = {char: "" for char in characters}
@@ -34,6 +31,10 @@ if 'character_names' not in st.session_state:
 # Initialize a dictionary to store night-specific data
 if 'night_data' not in st.session_state:
     st.session_state.night_data = {}
+
+# Initialize a dictionary to track disabled roles by Matador
+if 'matador_disabled_roles' not in st.session_state:
+    st.session_state.matador_disabled_roles = {}
 
 # Create a Streamlit app
 def main():
@@ -138,11 +139,23 @@ def display_night_results(night):
     kane_inquiry = night_data.get("Kane Inquiry", "")
     constantine_resurrect = night_data.get("Constantine Resurrect", "")
 
-    matador_ability_message = f"The Matador took the ability of {matador_target} ({get_person_role_by_name(matador_target)}) for the night." if matador_target and get_person_role_by_name(matador_target) not in roles_to_exclude else ""
-    doctor_save_message = f"Dr. Watson saved {doctor_save} ({get_person_role_by_name(doctor_save)}) from being targeted for the night." if doctor_save and get_person_role_by_name(doctor_save) not in roles_to_exclude else ""
-    leon_shoot_message = f"Leon shot {leon_target} ({get_person_role_by_name(leon_target)}) during the night." if leon_target and get_person_role_by_name(leon_target) not in roles_to_exclude else ""
-    kane_inquiry_message = f"Citizen Kane inquired about {kane_inquiry} ({get_person_role_by_name(kane_inquiry)}) during the night." if kane_inquiry and get_person_role_by_name(kane_inquiry) not in roles_to_exclude else ""
-    constantine_resurrect_message = f"Constantine resurrected {constantine_resurrect} ({get_person_role_by_name(constantine_resurrect)}) during the night." if constantine_resurrect and get_person_role_by_name(constantine_resurrect) not in roles_to_exclude else ""
+    matador_ability_message = ""
+    doctor_save_message = ""
+    leon_shoot_message = ""
+    kane_inquiry_message = ""
+    constantine_resurrect_message = ""
+
+    if matador_target:
+        matador_ability_message = f"The Matador took the ability of {matador_target} ({get_person_role_by_name(matador_target)}), who cannot use their ability."
+        disabled_role = get_person_role_by_name(matador_target)
+        if disabled_role == "Leon":
+            leon_shoot_message = f"Leon couldn't shoot anyone tonight as his ability is disabled."
+        elif disabled_role == "Dr. Watson":
+            doctor_save_message = f"Dr. Watson couldn't save anyone tonight as his ability is disabled."
+        elif disabled_role == "Citizen Kane":
+            kane_inquiry_message = f"Citizen Kane couldn't inquire about anyone tonight as his ability is disabled."
+        elif disabled_role == "Constantine":
+            constantine_resurrect_message = f"Constantine couldn't resurrect anyone tonight as his ability is disabled."
 
     night_actions = []
 
