@@ -109,7 +109,7 @@ def display_night_section(night):
     constantine_resurrect = st.text_input(f"Enter the name Constantine resurrects (if applicable) (Night {night}):")
 
     # Button to display night results for the current night
-    if st.button(f"Announce Night {night} Results"):
+    if st.button(f"Night Result {night}"):
         night_data = {
             "Godfather Ability": godfather_ability,
             "Godfather Victim": godfather_victim,
@@ -135,11 +135,11 @@ def display_night_results(night):
     kane_inquiry = night_data.get("Kane Inquiry", "")
     constantine_resurrect = night_data.get("Constantine Resurrect", "")
 
-    matador_ability_message = f"The Matador took the ability of {matador_target} ({get_person_role_by_name(matador_target)})" if matador_target else ""
-    doctor_save_message = f"Dr. Watson saved {doctor_save} ({get_person_role_by_name(doctor_save)})" if doctor_save else ""
-    leon_shoot_message = f"Leon shot {leon_target} ({get_person_role_by_name(leon_target)})" if leon_target else ""
-    kane_inquiry_message = f"Citizen Kane inquired about {kane_inquiry} ({get_person_role_by_name(kane_inquiry)})" if kane_inquiry else ""
-    constantine_resurrect_message = f"Constantine resurrected {constantine_resurrect} ({get_person_role_by_name(constantine_resurrect)})" if constantine_resurrect else ""
+    matador_ability_message = f"The Matador took the ability of {matador_target} ({get_person_role_by_name(matador_target)})'s ability, who cannot use their ability." if matador_target else ""
+    doctor_save_message = f"Dr. Watson saved {doctor_save} ({get_person_role_by_name(doctor_save)}) from being targeted." if doctor_save else ""
+    leon_shoot_message = f"Leon shot {leon_target} ({get_person_role_by_name(leon_target)}) during the night." if leon_target and get_person_role_by_name(leon_target) != "Leon" else ""
+    kane_inquiry_message = f"Citizen Kane inquired about {kane_inquiry} ({get_person_role_by_name(kane_inquiry)}) during the night." if kane_inquiry else ""
+    constantine_resurrect_message = f"Constantine resurrected {constantine_resurrect} ({get_person_role_by_name(constantine_resurrect)}) during the night." if constantine_resurrect else ""
 
     night_actions = []
 
@@ -162,9 +162,9 @@ def display_night_results(night):
             if character_role == "Citizen" and godfather_victim == "Leon":
                 night_actions.append(f"The Godfather {night} shot {character_name} ({character_role}) with an arrow, but {character_name}'s armor was destroyed, and he himself survived.")
             else:
-                night_actions.append(f"The Godfather {night} slaughters {character_name} ({character_role}) during the night.")
+                night_actions.append(f"The Godfather {night} kills {character_name} ({character_role}) during the night.")
         else:
-            night_actions.append(f"The Godfather {night} slaughters someone during the night.")
+            night_actions.append(f"The Godfather {night} kills someone during the night.")
 
     night_actions.extend([matador_ability_message, doctor_save_message, leon_shoot_message, kane_inquiry_message, constantine_resurrect_message])
     night_actions = [action for action in night_actions if action]  # Remove empty messages
