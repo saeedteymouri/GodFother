@@ -167,7 +167,9 @@ def display_night_results(night):
             night_actions.append(f"The Godfather {night} slaughters someone during the night.")
 
     # Exclude leon_shoot_message if Matador's target is Leon
-    if matador_target == "Leon":
+    character_name = st.session_state.character_names.get(matador_target, matador_target)
+    character_role = get_person_role_by_name(character_name)
+    if character_role == "Leon":
         leon_shoot_message = ""
 
     night_actions.extend([matador_ability_message, doctor_save_message, leon_shoot_message, kane_inquiry_message, constantine_resurrect_message])
