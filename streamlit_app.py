@@ -98,10 +98,7 @@ def display_night_section(night):
 
     # Leon Section
     st.subheader(f"The Role of Leon {night}")
-    if matador_target.lower() != "leon":
-        leon_target = st.text_input(f"Enter Leon's Target's Name (if applicable) (Night {night}):")
-    else:
-        leon_target = ""
+    leon_target = st.text_input(f"Enter Leon's Target's Name (if applicable) (Night {night}):")
 
     # Citizen Kane Section
     st.subheader(f"The Role of Citizen Kane {night}")
@@ -109,7 +106,7 @@ def display_night_section(night):
 
     # Constantine Section
     st.subheader(f"The Role of Constantine {night}")
-    constantine_resurrect = st.text_input(f"Enter the name Constantine brings back to life (if applicable) (Night {night}):")
+    constantine_resurrect = st.text_input(f"Enter the name Constantine resurrects (if applicable) (Night {night}):")
 
     # Button to display night results for the current night
     if st.button(f"Announce Night {night} Results"):
@@ -138,11 +135,11 @@ def display_night_results(night):
     kane_inquiry = night_data.get("Kane Inquiry", "")
     constantine_resurrect = night_data.get("Constantine Resurrect", "")
 
-    matador_ability_message = f"The Matador took the ability of {matador_target} ({get_person_role_by_name(matador_target)}), who cannot use their ability." if matador_target else ""
-    doctor_save_message = f"Dr. Watson saved {doctor_save} ({get_person_role_by_name(doctor_save)}) from being targeted." if doctor_save else ""
-    leon_shoot_message = f"Leon shot {leon_target} ({get_person_role_by_name(leon_target)}) during the night." if leon_target else ""
-    kane_inquiry_message = f"Citizen Kane inquired about {kane_inquiry} ({get_person_role_by_name(kane_inquiry)}) during the night." if kane_inquiry else ""
-    constantine_resurrect_message = f"Constantine resurrected {constantine_resurrect} ({get_person_role_by_name(constantine_resurrect)}) during the night." if constantine_resurrect else ""
+    matador_ability_message = f"The Matador took the ability of {matador_target} ({get_person_role_by_name(matador_target)})" if matador_target else ""
+    doctor_save_message = f"Dr. Watson saved {doctor_save} ({get_person_role_by_name(doctor_save)})" if doctor_save else ""
+    leon_shoot_message = f"Leon shot {leon_target} ({get_person_role_by_name(leon_target)})" if leon_target else ""
+    kane_inquiry_message = f"Citizen Kane inquired about {kane_inquiry} ({get_person_role_by_name(kane_inquiry)})" if kane_inquiry else ""
+    constantine_resurrect_message = f"Constantine resurrected {constantine_resurrect} ({get_person_role_by_name(constantine_resurrect)})" if constantine_resurrect else ""
 
     night_actions = []
 
