@@ -173,13 +173,13 @@ def display_night_results(night):
         leon_shoot_message = ""
     else
         if character_role == "Dr. Watson":
-            leon_shoot_message = ""
+            doctor_save_message = ""
         else
             if character_role == "Constantine":
-                leon_shoot_message = ""
+                constantine_resurrect_message = ""
             else
                 if character_role == "Citizen Kane":
-                    leon_shoot_message = ""
+                    kane_inquiry_message = ""
 
     night_actions.extend([matador_ability_message, doctor_save_message, leon_shoot_message, kane_inquiry_message, constantine_resurrect_message])
     night_actions = [action for action in night_actions if action]  # Remove empty messages
