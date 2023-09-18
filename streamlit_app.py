@@ -85,7 +85,7 @@ def display_night_section(night):
 
     # Godfather Section
     st.subheader(f"The Role of the Godfather {night}")
-    godfather_ability = st.selectbox(f"Choose Godfather's Ability (Night {night}):", ["doesn't kill anyone", "kills", "slaughters", "bribery"])
+    godfather_ability = st.selectbox(f"Choose Godfather's Ability (Night {night}):", ["kills", "slaughters", "bribery"], index=0)
     godfather_victim = st.text_input(f"Enter Victim's Name (if applicable) (Night {night}):")
 
     # Matador Section
@@ -127,7 +127,7 @@ def display_night_section(night):
 
 def display_night_results(night):
     night_data = st.session_state.night_data.get(night, {})
-    godfather_ability = night_data.get("Godfather Ability", "doesn't kill anyone")
+    godfather_ability = night_data.get("Godfather Ability", "kills")
     godfather_victim = night_data.get("Godfather Victim", "")
     matador_target = night_data.get("Matador Target", "")
     doctor_save = night_data.get("Doctor Save", "")
@@ -143,9 +143,7 @@ def display_night_results(night):
 
     night_actions = []
 
-    if godfather_ability == "doesn't kill anyone":
-        night_actions.append(f"The Godfather {night} doesn't kill anyone during the night.")
-    elif godfather_ability == "kills":
+    if godfather_ability == "kills":
         if godfather_victim:
             character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
             character_role = get_person_role_by_name(character_name)
@@ -162,7 +160,7 @@ def display_night_results(night):
             if character_role == "Citizen" and godfather_victim == "Leon":
                 night_actions.append(f"The Godfather {night} shot {character_name} ({character_role}) with an arrow, but {character_name}'s armor was destroyed, and he himself survived.")
             else:
-                night_actions.append(f"The Godfather {night} kills {character_name} ({character_role}) during the night.")
+                night_actions.append(f"The Godfather {night} slaughters {character_name} ({character_role}) during the night.")
         else:
             night_actions.append(f"The Godfather {night} slaughters someone during the night.")
 
