@@ -135,7 +135,7 @@ def display_night_results(night):
     kane_inquiry = night_data.get("Kane Inquiry", "")
     constantine_resurrect = night_data.get("Constantine Resurrect", "")
 
-    matador_ability_message = f"The Matador took the ability of {matador_target} ({get_person_role_by_name(matador_target)})'s ability, who cannot use their ability." if matador_target and get_person_role_by_name(matador_target) != "Leon" else ""
+    matador_ability_message = f"The Matador took the ability of {matador_target} ({get_person_role_by_name(matador_target)})'s ability, who cannot use their ability." else ""
     doctor_save_message = f"Dr. Watson saved {doctor_save} ({get_person_role_by_name(doctor_save)}) from being targeted." if doctor_save and get_person_role_by_name(matador_target) != "Dr. Watson" else ""
     leon_shoot_message = f"Leon shot {leon_target} ({get_person_role_by_name(leon_target)}) during the night." if leon_target and get_person_role_by_name(matador_target) != "Leon" else ""
     kane_inquiry_message = f"Citizen Kane inquired about {kane_inquiry} ({get_person_role_by_name(kane_inquiry)}) during the night." if kane_inquiry and get_person_role_by_name(matador_target) != "Citizen Kane" else ""
