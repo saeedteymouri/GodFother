@@ -141,22 +141,19 @@ def display_night_results(night):
         if godfather_victim:
             character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
             character_role = get_person_role_by_name(character_name)
-            if character_role == "Citizen" and godfather_victim == "Leon":
-                night_actions.append(f"The Godfather {night} shot {character_name} ({character_role}) with an arrow, but {character_name}'s armor was destroyed, and he himself survived.")
+            if character_role == "Leon" :
+                night_actions.append(f"The Godfather in the night {night} shot {character_name} ({character_role}), but {character_name}'s armor was destroyed, and he himself survived.")
             else:
-                night_actions.append(f"The Godfather {night} kills {character_name} ({character_role}) during the night.")
+                night_actions.append(f"The Godfather in the night {night} kills {character_name} ({character_role}) during the night.")
         else:
-            night_actions.append(f"The Godfather {night} kills someone during the night.")
+            night_actions.append(f"")
     elif godfather_ability == "slaughters":
         if godfather_victim:
             character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
             character_role = character_sides.get(godfather_victim)
-            if character_role == "Citizen" and godfather_victim == "Leon":
-                night_actions.append(f"The Godfather {night} shot {character_name} ({character_role}) with an arrow, but {character_name}'s armor was destroyed, and he himself survived.")
-            else:
-                night_actions.append(f"The Godfather {night} slaughters {character_name} ({character_role}) during the night.")
+            night_actions.append(f"The Godfather in the night {night} slaughters {character_name} ({character_role}) during the night.")
         else:
-            night_actions.append(f"The Godfather {night} slaughters someone during the night.")
+            night_actions.append(f"")
 
     matador_ability_message = f"The Matador took the ability of {matador_target} ({get_person_role_by_name(matador_target)})'s ability, who cannot use their ability." if matador_target else ""
     doctor_save_message = f"Dr. Watson saved {doctor_save} ({get_person_role_by_name(doctor_save)}) from being targeted." if doctor_save and get_person_role_by_name(matador_target) != "Dr. Watson" and get_person_role_by_name(godfather_victim) != "Dr. Watson" else ""
