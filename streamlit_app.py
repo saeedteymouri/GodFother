@@ -32,9 +32,9 @@ if 'character_names' not in st.session_state:
 if 'night_data' not in st.session_state:
     st.session_state.night_data = {}
 
-# Initialize a dictionary to store ability counts for each character
-if 'ability_counts' not in st.session_state:
-    st.session_state.ability_counts = {char: {"Killed": 0, "Slaughtered": 0, "Silenced": 0, "Bribed": 0} for char in characters}
+# Create a dictionary to store kill count for each character
+if 'kill_count' not in st.session_state:
+    st.session_state.kill_count = {char: 0 for char in characters}
 
 # Create a Streamlit app
 def main():
@@ -62,6 +62,10 @@ def main():
     # Night Sections
     for night in range(1, 9):
         display_night_section(night)
+
+    # Display Kill Statistics
+    st.header("Kill Statistics")
+    display_kill_statistics()
 
 def assign_roles():
     # Shuffle the names list to randomize the names
@@ -127,7 +131,15 @@ def display_night_section(night):
         # Store night-specific data
         st.session_state.night_data[night] = night_data
 
+        # Update kill count if someone was killed
+        if godfather_ability == "kills" and godfather_victim:
+            character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
+            update_kill_count(character_name)
+
         display_night_results(night)
+
+def update_kill_count(character_name):
+    st.session_state.kill_count[character_name] += 1
 
 def display_night_results(night):
     night_data = st.session_state.night_data.get(night, {})
@@ -138,16 +150,6 @@ def display_night_results(night):
     leon_target = night_data.get("Leon Target", "")
     kane_inquiry = night_data.get("Kane Inquiry", "")
     constantine_resurrect = night_data.get("Constantine Resurrect", "")
-
-    # Update ability counts for each person
-    update_ability_counts(godfather_victim, godfather_ability)
-    update_ability_counts(matador_target, "Silenced")  # Matador's target becomes silenced
-
-    # Display the table of ability counts
-    ability_counts_df = pd.DataFrame.from_dict(st.session_state.ability_counts, orient='index')
-    ability_counts_df.columns = ["Killed", "Slaughtered", "Silenced", "Bribed"]
-    st.header("Ability Counts:")
-    st.table(ability_counts_df)
 
     night_actions = []
 
@@ -181,9 +183,10 @@ def display_night_results(night):
     st.write(f"Night {night} Results:")
     st.write(night_result_message)
 
-def update_ability_counts(person, ability):
-    if person in st.session_state.ability_counts:
-        st.session_state.ability_counts[person][ability] += 1
+def display_kill_statistics():
+    # Display kill count for each character
+    for character, kill_count in st.session_state.kill_count.items():
+        st.write(f"{character}'s Kill Count: {kill_count}")
 
 if __name__ == "__main__":
     main()
