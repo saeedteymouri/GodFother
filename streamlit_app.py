@@ -104,9 +104,6 @@ else:
     st.session_state.last_matador_night = night  # Update the last Matador night
 
 # Continue with the rest of your Matador code
-# Matador Section
-    st.subheader(f"The Role of the Matador {night}")
-    matador_target = st.text_input(f"Enter Matador's Target's Name (if applicable) (Night {night}):")
 
     # Doctor Watson Section
     st.subheader(f"The Role of Dr. Watson {night}")
