@@ -32,6 +32,10 @@ if 'character_names' not in st.session_state:
 if 'night_data' not in st.session_state:
     st.session_state.night_data = {}
 
+# Initialize a state variable to store the last night Matador targeted someone
+if 'last_matador_night' not in st.session_state:
+    st.session_state.last_matador_night = 0
+
 # Create a Streamlit app
 def main():
     st.title("Character Name List App")
@@ -89,6 +93,18 @@ def display_night_section(night):
     godfather_victim = st.text_input(f"Enter Victim's Name (if applicable) (Night {night}):")
 
     # Matador Section
+st.subheader(f"The Role of the Matador {night}")
+matador_target = st.text_input(f"Enter Matador's Target's Name (if applicable) (Night {night}):")
+
+# Check if Matador is targeting the same person as last night
+if night == st.session_state.last_matador_night:
+    st.warning("Matador cannot target the same person two nights in a row.")
+    matador_target = ""
+else:
+    st.session_state.last_matador_night = night  # Update the last Matador night
+
+# Continue with the rest of your Matador code
+# Matador Section
     st.subheader(f"The Role of the Matador {night}")
     matador_target = st.text_input(f"Enter Matador's Target's Name (if applicable) (Night {night}):")
 
