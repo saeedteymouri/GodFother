@@ -93,17 +93,15 @@ def display_night_section(night):
     godfather_victim = st.text_input(f"Enter Victim's Name (if applicable) (Night {night}):")
 
     # Matador Section
-st.subheader(f"The Role of the Matador {night}")
-matador_target = st.text_input(f"Enter Matador's Target's Name (if applicable) (Night {night}):")
+    st.subheader(f"The Role of the Matador {night}")
+    matador_target = st.text_input(f"Enter Matador's Target's Name (if applicable) (Night {night}):")
 
-# Check if Matador is targeting the same person as last night
-if night == st.session_state.last_matador_night:
-    st.warning("Matador cannot target the same person two nights in a row.")
-    matador_target = ""
-else:
-    st.session_state.last_matador_night = night  # Update the last Matador night
-
-# Continue with the rest of your Matador code
+    # Check if Matador is targeting the same person as last night
+    if night == st.session_state.last_matador_night:
+        st.warning("Matador cannot target the same person two nights in a row.")
+        matador_target = ""
+    else:
+        st.session_state.last_matador_night = night  # Update the last Matador night
 
     # Doctor Watson Section
     st.subheader(f"The Role of Dr. Watson {night}")
@@ -182,4 +180,3 @@ def display_night_results(night):
 
 if __name__ == "__main__":
     main()
-
