@@ -32,10 +32,6 @@ if 'character_names' not in st.session_state:
 if 'night_data' not in st.session_state:
     st.session_state.night_data = {}
 
-# Create a dictionary to store kill count for each character
-if 'kill_count' not in st.session_state:
-    st.session_state.kill_count = {char: 0 for char in characters}
-
 # Create a Streamlit app
 def main():
     st.title("Character Name List App")
@@ -62,10 +58,6 @@ def main():
     # Night Sections
     for night in range(1, 9):
         display_night_section(night)
-
-    # Display Kill Statistics
-    st.header("Kill Statistics")
-    display_kill_statistics()
 
 def assign_roles():
     # Shuffle the names list to randomize the names
@@ -131,15 +123,7 @@ def display_night_section(night):
         # Store night-specific data
         st.session_state.night_data[night] = night_data
 
-        # Update kill count if someone was killed
-        if godfather_ability == "kills" and godfather_victim:
-            character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
-            update_kill_count(character_name)
-
         display_night_results(night)
-
-def update_kill_count(character_name):
-    st.session_state.kill_count[character_name] += 1
 
 def display_night_results(night):
     night_data = st.session_state.night_data.get(night, {})
@@ -157,7 +141,7 @@ def display_night_results(night):
         if godfather_victim:
             character_name = st.session_state.character_names.get(godfather_victim, godfather_victim)
             character_role = get_person_role_by_name(character_name)
-            if character_role == "Leon":
+            if character_role == "Leon" :
                 night_actions.append(f"The Godfather in the night {night} shot {character_name} ({character_role}), but {character_name}'s armor was destroyed, and he himself survived.")
             else:
                 night_actions.append(f"The Godfather in the night {night} kills {character_name} ({character_role}) during the night.")
@@ -172,10 +156,10 @@ def display_night_results(night):
             night_actions.append(f"")
 
     matador_ability_message = f"The Matador took the ability of {matador_target} ({get_person_role_by_name(matador_target)})'s ability, who cannot use their ability." if matador_target else ""
-    doctor_save_message = f"Dr. Watson saved {doctor_save} ({get_person_role_by_name(doctor_save)}) from being targeted." if doctor_save and get_person_role_by_name(matador_target) != "Dr. Watson" else ""
-    leon_shoot_message = f"Leon shot {leon_target} ({get_person_role_by_name(leon_target)}) during the night." if leon_target and get_person_role_by_name(matador_target) != "Leon" else ""
-    kane_inquiry_message = f"Citizen Kane inquired about {kane_inquiry} ({get_person_role_by_name(kane_inquiry)}) during the night." if kane_inquiry and get_person_role_by_name(matador_target) != "Citizen Kane" else ""
-    constantine_resurrect_message = f"Constantine resurrected {constantine_resurrect} ({get_person_role_by_name(constantine_resurrect)}) during the night." if constantine_resurrect and get_person_role_by_name(matador_target) != "Constantine"  else ""
+    doctor_save_message = f"Dr. Watson saved {doctor_save} ({get_person_role_by_name(doctor_save)}) from being targeted." if doctor_save and get_person_role_by_name(matador_target) != "Dr. Watson" and get_person_role_by_name(godfather_victim) != "Dr. Watson" else ""
+    leon_shoot_message = f"Leon shot {leon_target} ({get_person_role_by_name(leon_target)}) during the night." if leon_target and get_person_role_by_name(matador_target) != "Leon" and get_person_role_by_name(godfather_victim) != "Leon" else ""
+    kane_inquiry_message = f"Citizen Kane inquired about {kane_inquiry} ({get_person_role_by_name(kane_inquiry)}) during the night." if kane_inquiry and get_person_role_by_name(matador_target) != "Citizen Kane" and get_person_role_by_name(godfather_victim) != "Citizen Kane" else ""
+    constantine_resurrect_message = f"Constantine resurrected {constantine_resurrect} ({get_person_role_by_name(constantine_resurrect)}) during the night." if constantine_resurrect and get_person_role_by_name(matador_target) != "Constantine" and get_person_role_by_name(godfather_victim) != "Constantine" else ""
     
     night_actions.extend([matador_ability_message, doctor_save_message, leon_shoot_message, kane_inquiry_message, constantine_resurrect_message])
     night_actions = [action for action in night_actions if action]  # Remove empty messages
@@ -183,10 +167,6 @@ def display_night_results(night):
     st.write(f"Night {night} Results:")
     st.write(night_result_message)
 
-def display_kill_statistics():
-    # Display kill count for each character
-    for character, kill_count in st.session_state.kill_count.items():
-        st.write(f"{character}'s Kill Count: {kill_count}")
-
 if __name__ == "__main__":
     main()
+
